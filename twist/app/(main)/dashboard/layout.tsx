@@ -1,6 +1,6 @@
 import AccountSidebar from './_components/AccountSidebar';
 
-export default function AccountLayout({
+export default function DashboardLayout({
     children,
 }: {
     children: React.ReactNode;
