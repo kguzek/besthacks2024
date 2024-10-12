@@ -33,13 +33,13 @@ export default function DashboardLayout({
             />
           </Link>
 
-          <Link href={"#"} className="p-6">
+          <Link href={"/"} className="p-6">
             Home
           </Link>
-          <Link href={"#"} className="p-6">
+          <Link href={"/about"} className="p-6">
             O nas
           </Link>
-          <Link href={"#"} className="p-6">
+          <Link href={"/contact"} className="p-6">
             Kontakt
           </Link>
 
