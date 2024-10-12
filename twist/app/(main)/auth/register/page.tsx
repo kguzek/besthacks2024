@@ -39,7 +39,7 @@ export default function RegisterForm() {
             email: '',
             password: '',
             phoneNumber: '',
-            type: UserRole.APPLICANT
+            type: undefined
         }
     });
 
