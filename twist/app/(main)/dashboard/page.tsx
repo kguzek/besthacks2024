@@ -27,6 +27,7 @@ import { useRef, useState, useTransition } from 'react';
 import { JobHoursTime, JobType } from '@prisma/client';
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from './_components/DataTable';
+import Link from 'next/link';
 
 export type Payment = {
     id: string
@@ -115,8 +116,15 @@ export default async function DashboardPage() {
     const data = await getData();
 
     return (
-    <div className='flex-grow h-4/6 flex items-start justify-center'>
-        <DataTable columns={columns} data={data} />
+    <div className='flex-grow h-4/6 flex items-start flex-col items-center'>
+        <div className='w-full p-12 container'>
+            <div className='w-full flex justify-end mb-6'>
+                <Link href='/createOffer'>
+                    <Button variant="outline" className='p-2'><Icons.Plus /></Button>
+                </Link>
+            </div>
+            <DataTable columns={columns} data={data} />
+        </div>
     </div>
   )
 }
