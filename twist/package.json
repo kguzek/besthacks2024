@@ -23,6 +23,7 @@
     "@radix-ui/react-select": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@tanstack/react-table": "^8.20.5",
+    "ai": "^3.4.9",
     "bcryptjs": "^2.4.3",
     "better-auth": "0.4.2-beta.1",
     "cal-sans": "^1.0.1",
