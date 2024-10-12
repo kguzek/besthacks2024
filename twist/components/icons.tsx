@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
+import { FaCrown } from "react-icons/fa6";
 import { HiOutlineLogout } from "react-icons/hi";
+import { RiSettings4Fill } from "react-icons/ri";
 
 export type ValidIcon = keyof typeof Icons;
 
@@ -15,5 +17,8 @@ export const Icons = {
             <span className="text-primary">IST</span>
         </h1>
     ),
-    HiOutlineLogout
+    HiOutlineLogout,
+    Settings: RiSettings4Fill,
+    Crown: FaCrown,
+    LogOut: HiOutlineLogout,
 }
