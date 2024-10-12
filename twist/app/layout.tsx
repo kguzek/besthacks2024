@@ -32,6 +32,7 @@ export default async function RootLayout({
 
   return (
     <html lang="pl" suppressHydrationWarning>
+     <title>twIST</title>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
