@@ -31,7 +31,6 @@ import { UserRole } from '@prisma/client';
 
 export default function RegisterForm() {
     const [isPending, startTransition] = useTransition()
-    const [step, setStep] = useState(0)
     const router = useRouter()
     
     const form = useForm<z.infer<typeof signUpSchema>>({
@@ -75,7 +74,6 @@ export default function RegisterForm() {
                             onSubmit={form.handleSubmit(onSubmit)}
                             className='grid gap-4'
                         >
-                            {step === 0 && (
                                 <>
                                     <div className="grid grid-cols-1 gap-4">
                                         <FormField
@@ -113,14 +111,6 @@ export default function RegisterForm() {
                                             )}
                                         />
                                     </div>
-
-                                    <Button type="button" onClick={() => setStep(1)} className="w-full">
-                                        Następny krok
-                                    </Button>
-                                </>
-                            )}
-                            {step === 1 && (
-                                <>
                                     <FormField
                                         control={form.control}
                                         name='email'
@@ -165,7 +155,6 @@ export default function RegisterForm() {
                                         Utwórz konto
                                     </Button>
                                 </>
-                            )}
                         </form>
                     </Form>
                     {/* <div className="grid gap-4">
