@@ -69,9 +69,8 @@ model Offer {
   salary   Int
   skills   String[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  jobSkillsId String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Authenticator {
