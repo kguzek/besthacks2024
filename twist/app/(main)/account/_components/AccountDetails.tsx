@@ -38,7 +38,7 @@ export default function AccountDetails({ user }: { user: User }) {
         resolver: zodResolver(updateProfileSchema),
         defaultValues: {
             githubLink: user.githubLink!,
-            preferredHours: user.preferredHours!,
+            preferredHours: user.preferedHours!,
             jobType: user.jobType!,
             location: user.location!,
             jobTitle: user.jobTitle!,
@@ -63,7 +63,7 @@ export default function AccountDetails({ user }: { user: User }) {
 
     return (
         <div className="flex-grow h-4/6 flex items-start justify-center">
-            <Card className="mx-20 w-full">
+            <Card className="mx-20 w-full mb-20">
                 <CardHeader>
                     <CardTitle className="text-2xl">
                         Uzupełnij swoje dane
@@ -175,6 +175,44 @@ export default function AccountDetails({ user }: { user: User }) {
                                                 {...field}
                                                 disabled={isPending}
                                                 placeholder="Wrocław"
+                                                type=""
+                                                autoComplete=""
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="jobTitle"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Stanowisko</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                disabled={isPending}
+                                                placeholder=""
+                                                type=""
+                                                autoComplete=""
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="jobTitle"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Stanowisko</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                disabled={isPending}
+                                                placeholder=""
                                                 type=""
                                                 autoComplete=""
                                             />
