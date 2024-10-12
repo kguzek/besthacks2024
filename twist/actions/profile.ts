@@ -51,18 +51,3 @@ export const updateProfile = actionClient
     }
     return { success: "Pomyślnie zaktualizowano dane Twojego profilu." };
   });
-
-export const readProfile = actionClient.action(async () => {
-  const { user } = (await auth()) ?? {};
-  if (!user)
-    return {
-      failure: "Ta funkcja jest dostępna tylko dla zalogowanych użytkowników",
-    };
-  try {
-    return await prisma.user.findUnique({ where: { id: user?.id } });
-  } catch (e) {
-    console.error(e);
-    const error = e as Error;
-    return { failure: error.message };
-  }
-});
