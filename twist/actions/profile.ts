@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 import { getUserByEmail } from "@/lib/prisma";
 import { actionClient } from "@/lib/safe-action";
@@ -29,10 +30,22 @@ export const registerUser = actionClient
       const error = e as Error;
       return { failure: error.message };
     }
+    return { success: "Pomyślnie zarejestrowano nowego użytkownika! :)" };
   });
 
 export const updateProfile = actionClient
   .schema(updateProfileSchema)
   .action(async ({ parsedInput }) => {
-    // ...
+    const { user } = (await auth()) ?? {};
+    if (!user)
+      return {
+        failure: "Ta funkcja jest dostępna tylko dla zalogowanych użytkowników",
+      };
+    try {
+      await prisma.user.update({ where: { id: user?.id }, data: parsedInput });
+    } catch (e) {
+      console.error(e);
+      const error = e as Error;
+      return { failure: error.message };
+    }
   });

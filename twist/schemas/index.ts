@@ -45,4 +45,7 @@ export const updateProfileSchema = z.object({
     .refine((url) => GITHUB_REGEX.test(url), {
       message: "Nieprawidłowy format adresu profilu na GitHubie",
     }),
+  preferredHours: z.string({ required_error: "Wymiar pracy jest wymagany" }),
+  location: z.string({ required_error: "Miejscowość pracy jest wymagana" }),
+  jobType: z.string({ required_error: "Tryb pracy jest wymagany" }),
 });
