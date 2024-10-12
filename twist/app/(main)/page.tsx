@@ -27,7 +27,7 @@ export default function Home() {
                 id="hero"
                 className="relative mx-auto mt-44 max-w-[80rem] px-6 text-center md:px-8">
                 <h1 className="font-cal bg-gradient-to-br dark:from-white from-black from-30% dark:to-white/40 to-black/40 bg-clip-text py-6 text-5xl font-medium leading-none tracking-normal text-transparent text-balance sm:text-6xl md:text-7xl lg:text-8xl translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:200ms]">
-                    twIST to najlepszy sposób
+                    tw<span className='text-primary'>IST</span> to najlepszy sposób
                     <br className="hidden md:block" /> na znalezienie pracy.
                 </h1>
                 <p className="mb-12 text-lg tracking-tight text-gray-400 md:text-xl text-balance translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms]">
