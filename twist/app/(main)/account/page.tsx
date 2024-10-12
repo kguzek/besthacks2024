@@ -86,8 +86,8 @@ export default function AccountPage() {
                         {...field}
                         disabled={isPending}
                         placeholder="https://github.com/jankowalski"
-                        type="email"
-                        autoComplete="username"
+                        type="text"
+                        autoComplete=""
                       />
                     </FormControl>
                     <FormMessage />
