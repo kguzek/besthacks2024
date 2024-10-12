@@ -25,6 +25,7 @@ model User {
   role          UserRole        @default(APPLICANT)
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+  phoneNumber   String?
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
