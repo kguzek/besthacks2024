@@ -43,20 +43,6 @@ export default function DashboardPage() {
 
     const onSubmit = (values: z.infer<typeof updateProfileSchema>) => {
         console.log("wtf")
-        // startTransition(async () => {
-        //     const res = await registerUser(values);
-        //     console.log(res);
-        //     if (res?.data?.success) {
-        //         // redirect to login
-        //         toast.success("Account created successfully. Redirecting to login page...")
-        //         setTimeout(() => {
-        //             router.push('/auth/login')
-        //         }, 1500)
-        //     }
-        //     if (res?.data?.failure) {
-        //         toast.error(res?.data?.failure)
-        //     }
-        // })
     }
 
     return (
