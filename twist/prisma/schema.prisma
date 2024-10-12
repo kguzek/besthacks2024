@@ -14,6 +14,17 @@ enum UserRole {
   ADMIN
 }
 
+enum JobHoursTime {
+    FULL
+    PART
+    MINI
+}
+
+enum JobType {
+    REMOTE
+    ONSITE
+}
+
 model User {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
@@ -26,6 +37,13 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
   phoneNumber   String?
+
+  githubLink    String?
+  preferedHours JobHoursTime?   @default(FULL)
+  jobType       JobType?       @default(REMOTE)
+  location      String?
+  jobTitle      String?
+
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
