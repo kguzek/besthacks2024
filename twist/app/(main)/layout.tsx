@@ -33,7 +33,7 @@ export default function DashboardLayout({
                         />
                     </Link>
 
-                    <Link href={'/'} className="p-6">
+                    <Link href={'/'} className="p-6 pl-12">
                         Home
                     </Link>
                     <Link href={'/about'} className="p-6">
