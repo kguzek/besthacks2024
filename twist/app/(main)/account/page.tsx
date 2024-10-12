@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { startTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +26,8 @@ import {
 import { Icons } from "@/components/icons";
 import { useState, useTransition } from "react";
 import { JobHoursTime, JobType } from "@prisma/client";
+import { updateProfile } from "@/actions/profile";
+import { toast } from "sonner";
 
 export default function AccountPage() {
   const [isPending] = useTransition();
@@ -44,21 +46,19 @@ export default function AccountPage() {
   });
 
   const onSubmit = (values: z.infer<typeof updateProfileSchema>) => {
-    console.log("wtf", values);
-    // startTransition(async () => {
-    //     const res = await registerUser(values);
-    //     console.log(res);
-    //     if (res?.data?.success) {
-    //         // redirect to login
-    //         toast.success("Account created successfully. Redirecting to login page...")
-    //         setTimeout(() => {
-    //             router.push('/auth/login')
-    //         }, 1500)
-    //     }
-    //     if (res?.data?.failure) {
-    //         toast.error(res?.data?.failure)
-    //     }
-    // })
+    startTransition(async () => {
+      const res = await updateProfile(values);
+      console.log(res);
+      if (res?.data?.success) {
+        toast.success(res.data.success);
+        // setTimeout(() => {
+        //   router.push("/auth/login");
+        // }, 1500);
+      }
+      if (res?.data?.failure) {
+        toast.error(res.data.failure);
+      }
+    });
   };
 
   return (

@@ -38,12 +38,12 @@ model User {
   Authenticator Authenticator[]
   phoneNumber   String?
 
-  githubLink    String?
-  preferedHours JobHoursTime? @default(FULL)
-  jobType       JobType?      @default(REMOTE)
-  location      String?
-  jobTitle      String?
-  enabled       Boolean       @default(false)
+  githubLink     String?
+  preferredHours JobHoursTime? @default(FULL)
+  jobType        JobType?      @default(REMOTE)
+  location       String?
+  jobTitle       String?
+  enabled        Boolean       @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
