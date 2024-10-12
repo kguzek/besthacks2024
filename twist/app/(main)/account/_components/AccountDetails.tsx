@@ -38,7 +38,7 @@ export default function AccountDetails({ user }: { user: User }) {
         resolver: zodResolver(updateProfileSchema),
         defaultValues: {
             githubLink: user.githubLink!,
-            preferredHours: user.preferedHours!,
+            preferredHours: user.preferredHours!,
             jobType: user.jobType!,
             location: user.location!,
             jobTitle: user.jobTitle!,
