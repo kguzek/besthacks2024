@@ -1,15 +1,17 @@
 export default function Home() {
   return (
     <div className="w-full h-screen flex items-center justify-center flex-col">
-      <h1>Welcome to TwIST: Where Innovation Meets Opportunity</h1>
+      <h1 className="text-2xl font-bold">
+        Welcome to TwIST: Where Innovation Meets Opportunity
+      </h1>
       <p>
         Unlock your future in tech with the next generation of job matchmaking.
-        At TechElevate, we don&apos;t just find you jobs—we engineer your
-        success. Powered by cutting-edge AI, our platform seamlessly pairs your
-        unique skills, ambitions, and experiences with exclusive IT
-        opportunities that align with your career aspirations.
+        At TwIST, we don&apos;t just find you jobs—we engineer your success.
+        Powered by cutting-edge AI, our platform seamlessly pairs your unique
+        skills, ambitions, and experiences with exclusive IT opportunities that
+        align with your career aspirations.
       </p>
-      <h3>Why TwIST?</h3>
+      <h3 className="text-xl font-bold">Why TwIST?</h3>
       <ul>
         <li>
           <b>Precision Matching:</b> Our advanced algorithms dive deep into your
