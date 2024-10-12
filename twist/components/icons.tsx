@@ -9,7 +9,7 @@ export const Icons = {
         ...props
     }: React.HTMLAttributes<HTMLHeadingElement>) => (
         <h1
-            className={cn('text-xl leading-none font-cal', className)}
+            className={cn('text-2xl font-bold leading-none font-cal', className)}
             {...props}>
             tw
             <span className="text-primary">IST</span>
