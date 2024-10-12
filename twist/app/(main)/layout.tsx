@@ -41,7 +41,7 @@ export default function DashboardLayout({
                 <ModeToggle />
                 
                 <SignedIn>
-                    <UserButton className=''/>
+                    <UserButton className='ml-4'/>
                 </SignedIn>
                 <SignedOut>
                     <Link href={"/auth/login"} className='ml-4'><Button className=''>Login</Button></Link>
