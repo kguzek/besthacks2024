@@ -29,8 +29,7 @@ export default function RegisterForm() {
     const form = useForm<z.infer<typeof signUpSchema>>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
-            firstName: '',
-            lastName: '',
+            name: '',
             email: '',
             password: '',
         }
@@ -71,28 +70,15 @@ export default function RegisterForm() {
                         >
                             {step === 0 && (
                                 <>
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 gap-4">
                                         <FormField
                                             control={form.control}
-                                            name='firstName'
+                                            name='name'
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Imię</FormLabel>
+                                                    <FormLabel>Imię i nazwisko</FormLabel>
                                                     <FormControl>
-                                                        <Input {...field} disabled={isPending} placeholder='Imię' type='firstname' autoComplete='firstname' />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name='lastName'
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Nazwisko</FormLabel>
-                                                    <FormControl>
-                                                        <Input {...field} disabled={isPending} placeholder='Nazwisko' type='firstname' autoComplete='firstname' />
+                                                        <Input {...field} disabled={isPending} placeholder='Imię i nazwisko' type='name' autoComplete='name' />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
