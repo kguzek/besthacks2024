@@ -50,5 +50,17 @@ export const updateProfileSchema = z.object({
     required_error: "Tryb pracy jest wymagany",
   }),
   location: z.string({ required_error: "Miejscowość pracy jest wymagana" }),
-  jobTitle: z.string({ required_error: "Tytuł pracy jest wymagany" }),
+  jobTitle: z.string({ required_error: "Tytuł stanowiska jest wymagany" }),
+});
+
+export const createOfferSchema = z.object({
+  jobTitle: z.string({ required_error: "Tytuł stanowiska jest wymagany" }),
+  jobType: z.enum(Object.values(JobType) as [JobType, ...JobType[]], {
+    required_error: "Tryb pracy jest wymagany",
+  }),
+  location: z.string({ required_error: "Miejscowość pracy jest wymagana" }),
+  salary: z.number({
+    required_error: "Szacowane wynagrodzenie jest wymagane",
+  }),
+  responsibilities: z.string(),
 });
