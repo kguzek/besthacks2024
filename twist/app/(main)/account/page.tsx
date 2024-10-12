@@ -11,6 +11,13 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"  
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -20,6 +27,7 @@ import { Icons } from '@/components/icons';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { toast } from 'sonner';
+import { JobType } from '@prisma/client';
 
 export default function page() {
     const [isPending, startTransition] = useTransition()
@@ -107,10 +115,18 @@ export default function page() {
                                 name='jobType'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Tryp pracy</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} disabled={isPending} placeholder='' type='password' autoComplete='new-password' />
-                                        </FormControl>
+                                        <FormLabel>Tryb pracy</FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger className="">
+                                                    <SelectValue placeholder="Tryb pracy " />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value={JobType.ONSITE}>Stacjonarnie</SelectItem>
+                                                <SelectItem value={JobType.REMOTE}>Zdalnie</SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -122,7 +138,7 @@ export default function page() {
                                     <FormItem>
                                         <FormLabel>Lokalizacja</FormLabel>
                                         <FormControl>
-                                            <Input {...field} disabled={isPending} placeholder='' type='password' autoComplete='new-password' />
+                                            <Input {...field} disabled={isPending} placeholder='Wrocław' type='password' autoComplete='new-password' />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -142,7 +158,7 @@ export default function page() {
                                 )}
                             />
 
-                            <Button type="submit" className="w-full" disabled={isPending}>
+                            <Button type="submit" className="w-full mt-8" disabled={isPending}>
                                 Prześlij dane
                                 {isPending ? <Icons.Loading className="animate-spin w-4 h-4 ml-2" /> : <Icons.Right className="w-4 h-4 ml-2" />}
                             </Button>
