@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button"
+import AccountSidebar from './_components/AccountSidebar';
 
 export default function DashboardLayout({
     children,
+<<<<<<< Updated upstream
   }: {
     children: React.ReactNode
   }) {
@@ -17,4 +18,15 @@ export default function DashboardLayout({
         {children}
     </div>
   )
+=======
+}: {
+    children: React.ReactNode;
+}) {
+    return (
+        <div className="w-full h-screen flex items-center justify-center">
+            <AccountSidebar />
+            {children}
+        </div>
+    );
+>>>>>>> Stashed changes
 }
