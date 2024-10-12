@@ -10,21 +10,27 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.20.0",
+    "@auth/prisma-adapter": "^2.7.0",
+    "@prisma/client": "^5.12.0",
+    "bcryptjs": "^2.4.3",
     "better-auth": "0.4.2-beta.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.452.0",
     "next": "14.2.15",
+    "next-auth": "5.0.0-beta.20",
+    "next-safe-action": "^7.9.3",
     "next-themes": "^0.3.0",
     "pg": "^8.13.0",
     "prisma": "^5.20.0",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.3",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/pg": "^8.11.10",
     "@types/react": "^18",
