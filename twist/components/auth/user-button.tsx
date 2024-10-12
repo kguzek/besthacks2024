@@ -69,7 +69,7 @@ export default function UserButton({ className }: { className?: string }) {
                         </button>
                     </SignOutButton>
                     <div className='p-4 flex items-center gap-3 w-full py-2.5 justify-center'>
-                        <p className='text-xs font-medium translate-y-[1px]'>Secured by <Link href="/" className='font-cal'>🔒 MysticPay</Link></p>
+                        <p className='text-xs font-medium translate-y-[1px]'>Secured by <Link href="/" className='font-cal'>🔒 twIST</Link></p>
                     </div>
                 </div>
             </DropdownMenuContent>
