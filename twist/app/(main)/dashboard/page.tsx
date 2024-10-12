@@ -37,28 +37,28 @@ export type Payment = {
 
 export const columns: ColumnDef<Payment>[] = [
     {
-        accessorKey: "email",
+        accessorKey: "jobTitle",
         header: "Stanowisko",
     },
     {
-        accessorKey: "email",
-        header: "Godziny pracy",
-    },
-    {
-        accessorKey: "amount",
+        accessorKey: "jobType",
         header: "Tryb pracy",
     },
     {
-        accessorKey: "amount",
+        accessorKey: "location",
         header: "Lokalizacja",
     },
     {
-        accessorKey: "amount",
+        accessorKey: "salary",
         header: "Zarobki",
     },
     {
-        accessorKey: "amount",
-        header: "...",
+        accessorKey: "responsibilities",
+        header: "Obowiązki",
+    },
+    {
+        accessorKey: "status",
+        header: "Status",
     },
     {
         accessorKey: "status",
