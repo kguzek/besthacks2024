@@ -1,4 +1,4 @@
-import AccountSidebar from './_components/AccountSidebar';
+import Dashboard from './_components/DashboardSidebar';
 
 export default function DashboardLayout({
     children,
@@ -7,7 +7,7 @@ export default function DashboardLayout({
 }) {
     return (
         <div className="w-full h-screen flex items-center justify-center">
-            <AccountSidebar />
+            <Dashboard />
             {children}
         </div>
     );

@@ -4,7 +4,7 @@ import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 
-export default function AccountSidebar() {
+export default function DashboardSidebar() {
     return (
         <div className="h-full w-1/5 flex flex-col border-r border-border">
             <div className='pt-24 flex flex-col flex-1 gap-1 pr-4 pb-5'>

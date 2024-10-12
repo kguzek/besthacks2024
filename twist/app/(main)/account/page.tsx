@@ -162,8 +162,8 @@ export default function AccountPage() {
                         {...field}
                         disabled={isPending}
                         placeholder="Wrocław"
-                        type="password"
-                        autoComplete="new-password"
+                        type=""
+                        autoComplete=""
                       />
                     </FormControl>
                     <FormMessage />
@@ -181,8 +181,8 @@ export default function AccountPage() {
                         {...field}
                         disabled={isPending}
                         placeholder=""
-                        type="password"
-                        autoComplete="new-password"
+                        type=""
+                        autoComplete=""
                       />
                     </FormControl>
                     <FormMessage />
