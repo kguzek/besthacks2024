@@ -26,7 +26,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useRef, useState, useTransition } from 'react';
 import { JobHoursTime, JobType } from '@prisma/client';
 
-export default function page() {
+export default function DashboardPage() {
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | null>(null)
 
