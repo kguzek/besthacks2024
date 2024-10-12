@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { ArrowLeft, ChartPieIcon, Loader2, SettingsIcon, ShieldCheckIcon, UserIcon, SearchCheck } from "lucide-react";
+import { ArrowLeft, ChartPieIcon, Loader2, SettingsIcon, ShieldCheckIcon, UserIcon, ArrowRight } from "lucide-react";
 import { FaAngleRight, FaCrown } from "react-icons/fa6";
 import { HiOutlineLogout } from "react-icons/hi";
 import { RiSettings4Fill } from "react-icons/ri";
@@ -29,5 +29,5 @@ export const Icons = {
     Safe: ShieldCheckIcon,
     Stats: ChartPieIcon,
     Settings2: SettingsIcon,
-    SearchCheck: SearchCheck
+    ArrowRight: ArrowRight
 }

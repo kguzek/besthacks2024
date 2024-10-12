@@ -31,15 +31,15 @@ export default function Home() {
                     <br className="hidden md:block" /> na znalezienie pracy.
                 </h1>
                 <p className="mb-12 text-lg tracking-tight text-gray-400 md:text-xl text-balance translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms]">
-                    Also known as the best way to accept payments on your server.
+                    Automatycznie wyszukuj nalepsze oferty.
                     <br className="hidden md:block" /> 
-                    For users who want to support your server.
+                    Jako pracownik i jako pracodawca.
                 </p>
                 <div className='flex justify-center items-center gap-3'>
-                    <Link href="/">
+                    <Link href="/account">
                         <RainbowButton className='text-primary font-cal'>
-                            <Icons.Safe className='w-4 h-4 mr-2' />
-                            <span className='translate-y-[1px]'>Get Unlimited Access</span>
+                            <span className='translate-y-[1px]'>Rozpocznij</span>
+                            <Icons.ArrowRight className='w-4 h-4 ml-2' />
                         </RainbowButton>
                     </Link>
                 </div>
@@ -65,7 +65,7 @@ export default function Home() {
                 <div className="py-14">
                     <div className="mx-auto max-w-screen-xl px-4 md:px-8">
                         <h2 className="text-center text-sm font-semibold text-gray-600">
-                            TRUSTED BY SERVERS FROM AROUND THE WORLD
+                            NASI KLIENCI PRCUJĄ W TAKICH POTĘŻNYCH FIRMACH (😎):
                         </h2>
                         <div className="mt-6">
                             <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-16 [&amp;_path]:fill-white">
