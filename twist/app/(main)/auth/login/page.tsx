@@ -65,7 +65,6 @@ export default function LoginForm() {
     
     return (
         <div className='w-screen h-screen flex items-center justify-center relative'>
-            <Link href="/" className='absolute top-6 left-6'><Button variant='outline'><Icons.ArrowLeft className="w-4 h-4 mr-2" /> Go back</Button></Link>
             <Card className="mx-auto max-w-sm">
                 <CardHeader>
                     <CardTitle className="text-2xl">Login</CardTitle>

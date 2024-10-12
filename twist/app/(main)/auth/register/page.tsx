@@ -10,6 +10,13 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"  
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -20,6 +27,7 @@ import { registerUser } from '@/actions/profile';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@/components/icons';
+import { UserRole } from '@prisma/client';
 
 export default function RegisterForm() {
     const [isPending, startTransition] = useTransition()
@@ -54,12 +62,11 @@ export default function RegisterForm() {
 
     return (
         <div className='h-screen w-screen flex items-center justify-center relative'>
-            <Link href="/" className='absolute top-6 left-6'><Button variant='outline'><Icons.ArrowLeft className="w-4 h-4 mr-2" /> Go back</Button></Link>
             <Card className="mx-auto max-w-sm">
                 <CardHeader>
-                    <CardTitle className="text-xl">Sign Up</CardTitle>
+                    <CardTitle className="text-xl">Zarejestruj się</CardTitle>
                     <CardDescription>
-                        Enter your information to create an account
+                        Wypełnij swoje dane aby utworzyć konto
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -84,10 +91,31 @@ export default function RegisterForm() {
                                                 </FormItem>
                                             )}
                                         />
+                                        <FormField
+                                            control={form.control}
+                                            name='type'
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Typ konta</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl>
+                                                            <SelectTrigger className="">
+                                                                <SelectValue placeholder="Typ konta " />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            <SelectItem value={UserRole.APPLICANT   }>Kandydat</SelectItem>
+                                                            <SelectItem value={UserRole.COMPANY}>Pracodawca</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
                                     </div>
 
                                     <Button type="button" onClick={() => setStep(1)} className="w-full">
-                                        Next Step
+                                        Następny krok
                                     </Button>
                                 </>
                             )}
@@ -100,7 +128,20 @@ export default function RegisterForm() {
                                             <FormItem>
                                                 <FormLabel>Email</FormLabel>
                                                 <FormControl>
-                                                    <Input {...field} disabled={isPending} placeholder='john.doe@example.com' type='email' autoComplete='email' />
+                                                    <Input {...field} disabled={isPending} placeholder='jan.kowalski@example.com' type='email' autoComplete='email' />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name='phoneNumber'
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Numer telefonu</FormLabel>
+                                                <FormControl>
+                                                    <Input {...field} disabled={isPending} placeholder='123 456 789' type='tel' autoComplete='tel' />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -121,7 +162,7 @@ export default function RegisterForm() {
                                     />
 
                                     <Button type="submit" className="w-full" disabled={isPending}>
-                                        Create an account
+                                        Utwórz konto
                                     </Button>
                                 </>
                             )}
@@ -163,9 +204,9 @@ export default function RegisterForm() {
                         </Button>
                     </div> */}
                     <div className="mt-4 text-center text-sm">
-                        Already have an account?{' '}
+                        Masz już konto?{' '}
                         <Link href="/auth/login" className="underline">
-                            Sign in
+                            Zaloguj się
                         </Link>
                     </div>
                 </CardContent>
