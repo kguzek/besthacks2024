@@ -27,7 +27,7 @@ import { Icons } from '@/components/icons';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { toast } from 'sonner';
-import { JobType } from '@prisma/client';
+import { JobHoursTime, JobType } from '@prisma/client';
 
 export default function page() {
     const [isPending, startTransition] = useTransition()
@@ -43,7 +43,7 @@ export default function page() {
         resolver: zodResolver(updateProfileSchema),
         defaultValues: {
             githubLink: '',
-            preferredHours: '',
+            preferredHours: undefined,
             jobType: undefined,
             location: '',
             jobTitle: ''
@@ -72,10 +72,7 @@ export default function page() {
     <div className='flex-grow h-4/6 flex items-start justify-center'>
             <Card className="mx-20 w-full">
                 <CardHeader>
-                    <CardTitle className="text-2xl">Uzupełnij swoje dane</CardTitle>
-                            {/* <CardDescription>
-                                Enter your email below to login to your account
-                            </CardDescription> */}
+                    <CardTitle className="text-2xl">Uzupełnij swoje dane</CardTitle>    
                 </CardHeader>
                 <CardContent>
                     {error && <div className="bg-red-100 text-red-700 p-2 mb-4 text-sm rounded-md font-medium">{error}</div>}
@@ -103,9 +100,18 @@ export default function page() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Preferowane godziny pracy</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} disabled={isPending} placeholder='08:00 - 14:00' type='password' autoComplete='new-password' />
-                                        </FormControl>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger className="">
+                                                    <SelectValue placeholder="Wybierz godziny " />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value={JobHoursTime.FULL}>Pełen etat</SelectItem>
+                                                <SelectItem value={JobHoursTime.PART}>Pół etatu</SelectItem>
+                                                <SelectItem value={JobHoursTime.MINI}>Minimalne godziny</SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -115,7 +121,7 @@ export default function page() {
                                 name='jobType'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Tryb pracy</FormLabel>
+                                        <FormLabel>Wybierz tryb pracy</FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger className="">
