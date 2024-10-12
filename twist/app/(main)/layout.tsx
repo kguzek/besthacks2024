@@ -14,7 +14,7 @@ export default function DashboardLayout({
   }) {
   return (
     <>
-        <nav className='w-full fixed top-0 left-0 z-50 border-b border-border'>
+        <nav className='w-full fixed top-0 left-0 z-50 border-b border-border backdrop-blur-[12px]'>
             <div className='w-11/12 flex items-center container mx-auto'>
                 {/* <Icons.Logo /> */}
                 <Link href="/" className=''>
@@ -48,7 +48,12 @@ export default function DashboardLayout({
                 </SignedOut>
             </div>            
         </nav>
-        {children}
+        <div className='w-full h-screen'>
+            <div className='w-full h-full container mx-auto'>
+                {children}
+            </div>
+        </div>
+        
     </>
   )
 }
