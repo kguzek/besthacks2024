@@ -42,6 +42,7 @@ export default function AccountDetails({ user }: { user: User }) {
             jobType: user.jobType!,
             location: user.location!,
             jobTitle: user.jobTitle!,
+            preferredSalary: user.preferredSalary!,
         },
     });
 
@@ -79,167 +80,154 @@ export default function AccountDetails({ user }: { user: User }) {
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
                             className="grid gap-4">
-                            <FormField
-                                control={form.control}
-                                name="githubLink"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Github link</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                disabled={isPending}
-                                                placeholder="https://github.com/jankowalski"
-                                                type="text"
-                                                autoComplete=""
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="preferredHours"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>
-                                            Preferowane godziny pracy
-                                        </FormLabel>
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            defaultValue={field.value}>
+                            <div className='grid grid-cols-2 gap-5'>
+                                <FormField
+                                    control={form.control}
+                                    name="githubLink"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Github link</FormLabel>
                                             <FormControl>
-                                                <SelectTrigger className="">
-                                                    <SelectValue placeholder="Wybierz godziny " />
-                                                </SelectTrigger>
+                                                <Input
+                                                    {...field}
+                                                    disabled={isPending}
+                                                    placeholder="https://github.com/jankowalski"
+                                                    type="text"
+                                                    autoComplete=""
+                                                />
                                             </FormControl>
-                                            <SelectContent>
-                                                <SelectItem
-                                                    value={JobHoursTime.FULL}>
-                                                    Pełen etat
-                                                </SelectItem>
-                                                <SelectItem
-                                                    value={JobHoursTime.PART}>
-                                                    Pół etatu
-                                                </SelectItem>
-                                                <SelectItem
-                                                    value={JobHoursTime.MINI}>
-                                                    Minimalne godziny
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="jobType"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>
-                                            Wybierz tryb pracy
-                                        </FormLabel>
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            defaultValue={field.value}>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="preferredHours"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Preferowane godziny pracy
+                                            </FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger className="">
+                                                        <SelectValue placeholder="Wybierz godziny " />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem
+                                                        value={JobHoursTime.FULL}>
+                                                        Pełen etat
+                                                    </SelectItem>
+                                                    <SelectItem
+                                                        value={JobHoursTime.PART}>
+                                                        Pół etatu
+                                                    </SelectItem>
+                                                    <SelectItem
+                                                        value={JobHoursTime.MINI}>
+                                                        Minimalne godziny
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className='grid grid-cols-2 gap-5'>
+                                <FormField
+                                    control={form.control}
+                                    name="jobType"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Wybierz tryb pracy
+                                            </FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger className="">
+                                                        <SelectValue placeholder="Tryb pracy " />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem
+                                                        value={JobType.ONSITE}>
+                                                        Stacjonarnie
+                                                    </SelectItem>
+                                                    <SelectItem
+                                                        value={JobType.REMOTE}>
+                                                        Zdalnie
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="location"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Lokalizacja</FormLabel>
                                             <FormControl>
-                                                <SelectTrigger className="">
-                                                    <SelectValue placeholder="Tryb pracy " />
-                                                </SelectTrigger>
+                                                <Input
+                                                    {...field}
+                                                    disabled={isPending}
+                                                    placeholder="Wrocław"
+                                                    type=""
+                                                    autoComplete=""
+                                                />
                                             </FormControl>
-                                            <SelectContent>
-                                                <SelectItem
-                                                    value={JobType.ONSITE}>
-                                                    Stacjonarnie
-                                                </SelectItem>
-                                                <SelectItem
-                                                    value={JobType.REMOTE}>
-                                                    Zdalnie
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="location"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Lokalizacja</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                disabled={isPending}
-                                                placeholder="Wrocław"
-                                                type=""
-                                                autoComplete=""
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="jobTitle"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Stanowisko</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                disabled={isPending}
-                                                placeholder=""
-                                                type=""
-                                                autoComplete=""
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="jobTitle"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Stanowisko</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                disabled={isPending}
-                                                placeholder=""
-                                                type=""
-                                                autoComplete=""
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="jobTitle"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Stanowisko</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                disabled={isPending}
-                                                placeholder=""
-                                                type=""
-                                                autoComplete=""
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className='grid grid-cols-2 gap-5'>
+                                <FormField
+                                    control={form.control}
+                                    name="jobTitle"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Stanowisko</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    disabled={isPending}
+                                                    placeholder=""
+                                                    type=""
+                                                    autoComplete=""
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="preferredSalary"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Preferowana średnia płaca</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    disabled={isPending}
+                                                    placeholder=""
+                                                    type=""
+                                                    autoComplete=""
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
 
                             <Button
                                 type="submit"
