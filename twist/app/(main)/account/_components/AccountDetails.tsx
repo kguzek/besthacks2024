@@ -42,7 +42,7 @@ export default function AccountDetails({ user }: { user: User }) {
             jobType: user.jobType!,
             location: user.location!,
             jobTitle: user.jobTitle!,
-            preferredSalary: user.preferredSalary!,
+            preferredSalary: user.preferredSalary ? user.preferredSalary.toString() : '',
         },
     });
 
@@ -219,7 +219,7 @@ export default function AccountDetails({ user }: { user: User }) {
                                                     {...field}
                                                     disabled={isPending}
                                                     placeholder=""
-                                                    type=""
+                                                    type="number"
                                                     autoComplete=""
                                                 />
                                             </FormControl>

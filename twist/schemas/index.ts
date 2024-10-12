@@ -43,7 +43,7 @@ export const updateProfileSchema = z.object({
     Object.values(JobHoursTime) as [JobHoursTime, ...JobHoursTime[]],
     { required_error: "Wymiar pracy jest wymagany" }
   ),
-  preferredSalary: z.number({
+  preferredSalary: z.string({
     required_error: "Preferowane wynagrodzenie jest wymagane",
   }),
   jobType: z.enum(Object.values(JobType) as [JobType, ...JobType[]], {
@@ -59,7 +59,7 @@ export const createOfferSchema = z.object({
     required_error: "Tryb pracy jest wymagany",
   }),
   location: z.string({ required_error: "Miejscowość pracy jest wymagana" }),
-  salary: z.number({
+  salary: z.string({
     required_error: "Szacowane wynagrodzenie jest wymagane",
   }),
   responsibilities: z.string(),

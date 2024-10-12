@@ -69,7 +69,6 @@ export default function RegisterForm() {
     // State to track the selected year, month, and date for the calendar
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth()); // 0-based month
-    const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined); // Track selected date
     const [calendarMonth, setCalendarMonth] = useState<Date>(new Date()); // Track calendar's currently displayed month
 
     // Update calendar when year or month changes
@@ -92,70 +91,156 @@ export default function RegisterForm() {
                             onSubmit={form.handleSubmit(onSubmit)}
                             className='grid gap-4'
                         >
-                            <div className='grid grid-cols-2 gap-5'>
+                            <div className='grid gap-4'>
                                 <div className="grid grid-cols-1 gap-4">
-                                    <FormField
-                                        control={form.control}
-                                        name='name'
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Imię i nazwisko</FormLabel>
-                                                <FormControl>
-                                                    <Input {...field} disabled={isPending} placeholder='Imię i nazwisko' type='name' autoComplete='name' />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name='type'
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Typ konta</FormLabel>
-                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <div className='grid grid-cols-2 gap-5'>
+                                        <FormField
+                                            control={form.control}
+                                            name='name'
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Imię i nazwisko</FormLabel>
                                                     <FormControl>
-                                                        <SelectTrigger className="">
-                                                            <SelectValue placeholder="Typ konta " />
-                                                        </SelectTrigger>
+                                                        <Input {...field} disabled={isPending} placeholder='Imię i nazwisko' type='name' autoComplete='name' />
                                                     </FormControl>
-                                                    <SelectContent>
-                                                        <SelectItem value={UserRole.APPLICANT}>Kandydat</SelectItem>
-                                                        <SelectItem value={UserRole.COMPANY}>Pracodawca</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <div className='grid grid-cols-2 gap-5'></div>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+
+                                        <FormField
+                                            control={form.control}
+                                            name='type'
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Typ konta</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl>
+                                                            <SelectTrigger className="">
+                                                                <SelectValue placeholder="Typ konta " />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            <SelectItem value={UserRole.APPLICANT}>Kandydat</SelectItem>
+                                                            <SelectItem value={UserRole.COMPANY}>Pracodawca</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                    
+                                    <div className='grid grid-cols-1 gap-5'>
+                                        <FormField
+                                            control={form.control}
+                                            name="dob"
+                                            render={({ field }) => (
+                                                <FormItem className="flex flex-col">
+                                                    <FormLabel>Data urodzenia</FormLabel>
+                                                    <Popover>
+                                                        <PopoverTrigger asChild>
+                                                            <FormControl>
+                                                                <Button
+                                                                    variant={"outline"}
+                                                                    className={cn(
+                                                                        "w-full pl-3 text-left font-normal",
+                                                                        !field.value && "text-muted-foreground"
+                                                                    )}
+                                                                >
+                                                                    {field.value ? (
+                                                                        format(field.value, "PPP")
+                                                                    ) : (
+                                                                        <span>Wybierz datę</span>
+                                                                    )}
+                                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                                </Button>
+                                                            </FormControl>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-auto p-0" align="start">
+                                                            <div className="flex justify-between px-4 py-2">
+                                                                <Select
+                                                                    value={String(selectedMonth)}
+                                                                    onValueChange={(value) => setSelectedMonth(Number(value))}
+                                                                >
+                                                                    <SelectTrigger className="w-24">
+                                                                        <SelectValue placeholder="Month" />
+                                                                    </SelectTrigger>
+                                                                    <SelectContent>
+                                                                        {Array.from({ length: 12 }, (_, i) => (
+                                                                            <SelectItem key={i} value={String(i)}>
+                                                                                {format(new Date(2000, i), "MMMM")}
+                                                                            </SelectItem>
+                                                                        ))}
+                                                                    </SelectContent>
+                                                                </Select>
+                                                                <Select
+                                                                    value={String(selectedYear)}
+                                                                    onValueChange={(value) => setSelectedYear(Number(value))}
+                                                                >
+                                                                    <SelectTrigger className="w-24 ml-2">
+                                                                        <SelectValue placeholder="Year" />
+                                                                    </SelectTrigger>
+                                                                    <SelectContent>
+                                                                        {Array.from({ length: 125 }, (_, i) => (
+                                                                            <SelectItem key={i} value={String(2024 - i)}>
+                                                                                {2024 - i}
+                                                                            </SelectItem>
+                                                                        ))}
+                                                                    </SelectContent>
+                                                                </Select>
+                                                            </div>
+                                                            <Calendar
+                                                                mode="single"
+                                                                selected={field.value}
+                                                                onSelect={(date) => {
+                                                                    field.onChange(date); // Update form field
+                                                                }}
+                                                                disabled={(date) =>
+                                                                    date > new Date() || date < new Date("1900-01-01")
+                                                                }
+                                                                month={calendarMonth} // Update calendar month based on selected year and month
+                                                                initialFocus
+                                                            />
+                                                        </PopoverContent>
+                                                    </Popover>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                    <div className='grid grid-cols-2 gap-5'>
+                                        <FormField
+                                            control={form.control}
+                                            name='phoneNumber'
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Numer telefonu</FormLabel>
+                                                    <FormControl>
+                                                        <Input {...field} disabled={isPending} placeholder='123 456 789' type='tel' autoComplete='tel' />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+
+                                        <FormField
+                                            control={form.control}
+                                            name='email'
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Email</FormLabel>
+                                                    <FormControl>
+                                                        <Input {...field} disabled={isPending} placeholder='jan.kowalski@example.com' type='email' autoComplete='email' />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
                                 </div>
-                                <FormField
-                                    control={form.control}
-                                    name='email'
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Email</FormLabel>
-                                            <FormControl>
-                                                <Input {...field} disabled={isPending} placeholder='jan.kowalski@example.com' type='email' autoComplete='email' />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name='phoneNumber'
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Numer telefonu</FormLabel>
-                                            <FormControl>
-                                                <Input {...field} disabled={isPending} placeholder='123 456 789' type='tel' autoComplete='tel' />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                
+                               
                                 <FormField
                                     control={form.control}
                                     name='password'
@@ -169,85 +254,8 @@ export default function RegisterForm() {
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="dob"
-                                    render={({ field }) => (
-                                        <FormItem className="flex flex-col">
-                                            <FormLabel>Data urodzenia</FormLabel>
-                                            <Popover>
-                                                <PopoverTrigger asChild>
-                                                    <FormControl>
-                                                        <Button
-                                                            variant={"outline"}
-                                                            className={cn(
-                                                                "w-[240px] pl-3 text-left font-normal",
-                                                                !field.value && "text-muted-foreground"
-                                                            )}
-                                                        >
-                                                            {field.value ? (
-                                                                format(field.value, "PPP")
-                                                            ) : (
-                                                                <span>Wybierz datę</span>
-                                                            )}
-                                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                                        </Button>
-                                                    </FormControl>
-                                                </PopoverTrigger>
-                                                <PopoverContent className="w-auto p-0" align="start">
-                                                    <div className="flex justify-between px-4 py-2">
-                                                        <Select
-                                                            value={String(selectedMonth)}
-                                                            onValueChange={(value) => setSelectedMonth(Number(value))}
-                                                        >
-                                                            <SelectTrigger className="w-24">
-                                                                <SelectValue placeholder="Month" />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                {Array.from({ length: 12 }, (_, i) => (
-                                                                    <SelectItem key={i} value={String(i)}>
-                                                                        {format(new Date(2000, i), "MMMM")}
-                                                                    </SelectItem>
-                                                                ))}
-                                                            </SelectContent>
-                                                        </Select>
-                                                        <Select
-                                                            value={String(selectedYear)}
-                                                            onValueChange={(value) => setSelectedYear(Number(value))}
-                                                        >
-                                                            <SelectTrigger className="w-24 ml-2">
-                                                                <SelectValue placeholder="Year" />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                {Array.from({ length: 125 }, (_, i) => (
-                                                                    <SelectItem key={i} value={String(2024 - i)}>
-                                                                        {2024 - i}
-                                                                    </SelectItem>
-                                                                ))}
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </div>
-                                                    <Calendar
-                                                        mode="single"
-                                                        selected={field.value}
-                                                        onSelect={(date) => {
-                                                            setSelectedDate(date); // Set the selected date
-                                                            field.onChange(date); // Update form field
-                                                        }}
-                                                        disabled={(date) =>
-                                                            date > new Date() || date < new Date("1900-01-01")
-                                                        }
-                                                        month={calendarMonth} // Update calendar month based on selected year and month
-                                                        initialFocus
-                                                    />
-                                                </PopoverContent>
-                                            </Popover>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
 
-                                <Button type="submit" className="w-full" disabled={isPending}>
+                                <Button type="submit" className="w-full mt-5" disabled={isPending}>
                                     Utwórz konto
                                 </Button>
                             </div>
