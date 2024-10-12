@@ -38,20 +38,7 @@ export const columns: ColumnDef<Payment>[] = [
     {
         accessorKey: "status",
         header: "Status",
-    },
-    {
-        accessorKey: "status",
-        header: () => <div className="text-right">Status</div>,
-        cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("amount"))
-        const formatted = new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-        }).format(amount)
-    
-        return <div className="text-right font-medium">{formatted}</div>
-        },
-    },
+    }
 ]
 
 async function getData(): Promise<Payment[]> {
@@ -74,7 +61,7 @@ export default async function DashboardPage() {
     const data = await getData();
 
     return (
-    <div className='flex-grow h-4/6 flex items-start flex-col items-center'>
+    <div className='flex-grow h-4/6 flex items-start flex-col'>
         <div className='w-full p-12 container'>
             <div className='w-full flex justify-end mb-6'>
                 <Link href='/createOffer'>

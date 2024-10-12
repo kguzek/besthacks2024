@@ -50,7 +50,7 @@ export default function DashboardLayout({
                     </SignedIn>
                     <SignedOut>
                         <Link href={'/auth/login'} className="ml-4">
-                            <Button className="">Login</Button>
+                            <Button className="px-6">Login</Button>
                         </Link>
                     </SignedOut>
                 </div>
