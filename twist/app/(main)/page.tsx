@@ -1,41 +1,122 @@
+"use client"
+
+/* eslint-disable @next/next/no-img-element */
+import { Icons } from '@/components/icons';
+import { BorderBeam } from '@/components/magicui/border-beam';
+import Particles from '@/components/magicui/particles';
+import { RainbowButton } from '@/components/ui/rainbow-button';
+
+import HeroImageDark from '@/public/images/hero-dark.png';
+import HeroImageLight from '@/public/images/hero-light.png';
+import { useTheme } from 'next-themes';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
 export default function Home() {
-  return (
-    <div className="w-full h-screen flex items-center justify-center flex-col">
-      <h1 className="text-7xl font-bold">
-        Welcome to TwIST: Where Innovation Meets Opportunity
-      </h1>
-      <div className="max-w-1/2 mt-4">
-        <p className="text-3xl">
-          Unlock your future in tech with the next generation of job
-          matchmaking. At TwIST, we don&apos;t just find you jobs—we engineer
-          your success. Powered by cutting-edge AI, our platform seamlessly
-          pairs your unique skills, ambitions, and experiences with exclusive IT
-          opportunities that align with your career aspirations.
-        </p>
-        <h3 className="text-5xl font-bold mt-20">Why TwIST?</h3>
-        <ul className="list-disc list-inside mt-4 flex flex-col gap-1.5 text-2xl">
-          <li>
-            <b>Precision Matching:</b> Our advanced algorithms dive deep into
-            your profile, mapping your expertise to positions at leading global
-            companies.
-          </li>
-          <li>
-            <b>Tailored Opportunities:</b> Forget sifting through countless
-            listings. We bring curated opportunities directly to you, saving you
-            time and effort.
-          </li>
-          <li>
-            <b>Real-Time Insights:</b> Stay ahead of the curve with instant
-            alerts for positions that perfectly match your evolving career
-            goals.
-          </li>
-          <li>
-            <b>High-Level Connections:</b> From startups to Fortune 500s, access
-            roles that aren&apos;t on the traditional job boards—positions
-            designed for innovators like you.
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
+    const { resolvedTheme } = useTheme();
+    const [color, setColor] = useState("#ffffff");
+
+    useEffect(() => {
+        setColor(resolvedTheme === "dark" ? "#ffffff" : "#000000");
+    }, [resolvedTheme]);
+
+    return (
+        <main className="mx-auto flex-1 overflow-hidden">
+            <section
+                id="hero"
+                className="relative mx-auto mt-44 max-w-[80rem] px-6 text-center md:px-8">
+                <h1 className="font-cal bg-gradient-to-br dark:from-white from-black from-30% dark:to-white/40 to-black/40 bg-clip-text py-6 text-5xl font-medium leading-none tracking-normal text-transparent text-balance sm:text-6xl md:text-7xl lg:text-8xl translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:200ms]">
+                    twIST to najlepszy sposób
+                    <br className="hidden md:block" /> na znalezienie pracy.
+                </h1>
+                <p className="mb-12 text-lg tracking-tight text-gray-400 md:text-xl text-balance translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms]">
+                    Also known as the best way to accept payments on your server.
+                    <br className="hidden md:block" /> 
+                    For users who want to support your server.
+                </p>
+                <div className='flex justify-center items-center gap-3'>
+                    <Link href="/">
+                        <RainbowButton className='text-primary font-cal'>
+                            <Icons.Safe className='w-4 h-4 mr-2' />
+                            <span className='translate-y-[1px]'>Get Unlimited Access</span>
+                        </RainbowButton>
+                    </Link>
+                </div>
+                <div className="relative mt-[8rem] animate-fade-up opacity-0 [--animation-delay:400ms] [perspective:2000px] after:absolute after:inset-0 after:z-20 after:[background:linear-gradient(to_top,hsl(var(--background))_30%,transparent)]">
+                    <div className="rounded-xl border border-white/10 bg-white bg-opacity-[0.01] before:absolute before:bottom-1/2 before:left-0 before:top-0 before:h-full before:w-full before:opacity-0 before:[filter:blur(180px)] before:[background-image:linear-gradient(to_bottom,hsl(var(--primary)),hsl(var(--primary)),transparent_40%)] before:animate-image-glow">
+                        <BorderBeam colorFrom='hsl(var(--primary))' />
+                        <Image
+                            src={HeroImageDark}
+                            alt="Hero Image"
+                            className="hidden relative w-full h-full rounded-[inherit] border object-contain dark:block"
+                        />
+                        <Image
+                            src={HeroImageLight}
+                            alt="Hero Image"
+                            className="block relative w-full h-full  rounded-[inherit] border object-contain dark:hidden"
+                        />
+                    </div>
+                </div>
+            </section>
+            <section
+                id="clients"
+                className="text-center mx-auto max-w-[80rem] px-6 md:px-8">
+                <div className="py-14">
+                    <div className="mx-auto max-w-screen-xl px-4 md:px-8">
+                        <h2 className="text-center text-sm font-semibold text-gray-600">
+                            TRUSTED BY SERVERS FROM AROUND THE WORLD
+                        </h2>
+                        <div className="mt-6">
+                            <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-16 [&amp;_path]:fill-white">
+                                <li>
+                                    <img
+                                        alt="Google"
+                                        src="https://cdn.magicui.design/companies/Google.svg"
+                                        className="h-8 w-28 px-2 dark:brightness-0 dark:invert"
+                                    />
+                                </li>
+                                <li>
+                                    <img
+                                        alt="Microsoft"
+                                        src="https://cdn.magicui.design/companies/Microsoft.svg"
+                                        className="h-8 w-28 px-2 dark:brightness-0 dark:invert"
+                                    />
+                                </li>
+                                <li>
+                                    <img
+                                        alt="GitHub"
+                                        src="https://cdn.magicui.design/companies/GitHub.svg"
+                                        className="h-8 w-28 px-2 dark:brightness-0 dark:invert"
+                                    />
+                                </li>
+                                <li>
+                                    <img
+                                        alt="Uber"
+                                        src="https://cdn.magicui.design/companies/Uber.svg"
+                                        className="h-8 w-28 px-2 dark:brightness-0 dark:invert"
+                                    />
+                                </li>
+                                <li>
+                                    <img
+                                        alt="Notion"
+                                        src="https://cdn.magicui.design/companies/Notion.svg"
+                                        className="h-8 w-28 px-2 dark:brightness-0 dark:invert"
+                                    />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div className="[--color:hsl(var(--primary))] pointer-events-none relative -z-[2] mx-auto h-[50rem] overflow-hidden [mask-image:radial-gradient(ellipse_at_center_center,#000,transparent_50%)] my-[-18.8rem] before:absolute before:inset-0 before:h-full before:w-full before:opacity-40 before:[background-image:radial-gradient(circle_at_bottom_center,var(--color),transparent_70%)] after:absolute after:-left-1/2 after:top-1/2 after:aspect-[1/0.7] after:w-[200%] after:rounded-[50%] after:border-t after:border-[hsl(var(--border))] after:bg-background"></div>
+            <Particles
+                className="absolute inset-0 -z-10 animate-fade-up opacity-0 [--animation-delay:400ms]"
+                quantity={40}
+                ease={40}
+                color={color}
+                refresh
+            />
+        </main>
+    );
 }

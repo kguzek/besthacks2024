@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
+import "cal-sans";
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
