@@ -1,4 +1,4 @@
-import { JobType, UserRole } from "@prisma/client";
+import { UserRole } from "@prisma/client";
 import { z } from "zod";
 
 export const signInSchema = z.object({
@@ -24,7 +24,6 @@ export const signUpSchema = z.object({
     .min(1, "Password is required")
     .min(8, "Password must be more than 8 characters")
     .max(128, "Password must be less than 128 characters"),
-  repeatPassword: z.string({ required_error: "Repeat password is required" }),
   name: z
     .string({ required_error: "Name is required" })
     .min(1, "Name is required")
@@ -45,10 +44,4 @@ export const updateProfileSchema = z.object({
     .refine((url) => GITHUB_REGEX.test(url), {
       message: "Nieprawidłowy format adresu profilu na GitHubie",
     }),
-  preferredHours: z.string({ required_error: "Wymiar pracy jest wymagany" }),
-  jobType: z.enum(Object.values(JobType) as [JobType, ...JobType[]], {
-    required_error: "Tryb pracy jest wymagany",
-  }),
-  location: z.string({ required_error: "Miejscowość pracy jest wymagana" }),
-  jobTitle: z.string({ required_error: "Tytuł pracy jest yymagany" }),
 });

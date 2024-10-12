@@ -21,12 +21,11 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { signUpSchema } from '@/schemas';
-import { useState, useTransition } from 'react';
+import { useTransition } from 'react';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { registerUser } from '@/actions/profile';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { Icons } from '@/components/icons';
 import { UserRole } from '@prisma/client';
 
 export default function RegisterForm() {
@@ -39,10 +38,13 @@ export default function RegisterForm() {
             name: '',
             email: '',
             password: '',
+            phoneNumber: '',
+            type: UserRole.APPLICANT
         }
     });
 
     const onSubmit = (values: z.infer<typeof signUpSchema>) => {
+        console.log("wtf")
         startTransition(async () => {
             const res = await registerUser(values);
             console.log(res);
@@ -102,7 +104,7 @@ export default function RegisterForm() {
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>
-                                                            <SelectItem value={UserRole.APPLICANT   }>Kandydat</SelectItem>
+                                                            <SelectItem value={UserRole.APPLICANT}>Kandydat</SelectItem>
                                                             <SelectItem value={UserRole.COMPANY}>Pracodawca</SelectItem>
                                                         </SelectContent>
                                                     </Select>
