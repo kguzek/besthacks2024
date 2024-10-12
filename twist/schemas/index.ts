@@ -3,27 +3,22 @@ import { z } from "zod";
 
 export const signInSchema = z.object({
   email: z
-    .string({ required_error: "Email is required" })
-    .min(1, "Email is required")
-    .email("Invalid email"),
+    .string({ required_error: "Email jest wymagany" })
+    .email("Nieprawidłowy adres email"),
   password: z
-    .string({ required_error: "Password is required" })
-    .min(1, "Password is required")
-    .min(8, "Password must be more than 8 characters")
-    .max(128, "Password must be less than 128 characters"),
+    .string({ required_error: "Hasło jest wymagane" })
+    .min(8, "Hasło musi mieć co najmniej 8 znaków"),
   callbackUrl: z.string({ required_error: "Callback URL is required" }),
 });
 
 export const signUpSchema = z.object({
   email: z
-    .string({ required_error: "Email is required" })
-    .min(1, "Email is required")
-    .email("Invalid email"),
+    .string({ required_error: "Email jest wymagany" })
+    .email("Nieprawidłowy adres email"),
   password: z
-    .string({ required_error: "Password is required" })
-    .min(1, "Password is required")
-    .min(8, "Password must be more than 8 characters")
-    .max(128, "Password must be less than 128 characters"),
+    .string({ required_error: "Hasło jest wymagane" })
+    .min(8, "Hasło musi mieć co najmniej 8 znaków"),
+  dob: z.date({ required_error: "Data urodzenia jest wymagana" }),
   name: z
     .string({ required_error: "Name is required" })
     .min(1, "Name is required")
@@ -48,6 +43,9 @@ export const updateProfileSchema = z.object({
     Object.values(JobHoursTime) as [JobHoursTime, ...JobHoursTime[]],
     { required_error: "Wymiar pracy jest wymagany" }
   ),
+  preferredSalary: z.number({
+    required_error: "Preferowane wynagrodzenie jest wymagane",
+  }),
   jobType: z.enum(Object.values(JobType) as [JobType, ...JobType[]], {
     required_error: "Tryb pracy jest wymagany",
   }),

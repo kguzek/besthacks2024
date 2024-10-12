@@ -22,6 +22,7 @@ export const registerUser = actionClient
           password: hashedPassword,
           name: parsedInput.name,
           phoneNumber: parsedInput.phoneNumber,
+          dob: parsedInput.dob,
           role: parsedInput.type,
         },
       });
