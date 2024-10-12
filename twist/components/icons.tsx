@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { FaCrown } from "react-icons/fa6";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { FaAngleRight, FaCrown } from "react-icons/fa6";
 import { HiOutlineLogout } from "react-icons/hi";
 import { RiSettings4Fill } from "react-icons/ri";
 
@@ -21,4 +22,7 @@ export const Icons = {
     Settings: RiSettings4Fill,
     Crown: FaCrown,
     LogOut: HiOutlineLogout,
+    ArrowLeft,
+    Right: FaAngleRight,
+    Loading: Loader2
 }
