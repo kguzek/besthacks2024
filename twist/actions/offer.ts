@@ -142,6 +142,7 @@ export const createOffer = actionClient
                     skills,
                     preparedSkills,
                     embbedingSkills: embedding,
+                    userId: authData.user.id!,
                 },
             });
 
@@ -155,9 +156,9 @@ export const createOffer = actionClient
             await prisma.offer.update({
                 where: { id: createdOffer.id },
                 data: {
-                    selectedCandidates
+                    selectedCandidates,
                 },
-            })
+            });
 
             return {
                 success: "Stworzono ofertę",

@@ -58,30 +58,33 @@ model User {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    Offer     Offer[]
 }
 
 type selectedCand {
-    idx Int
+    idx            Int
     distanceRating Int
-    name String
-    location String
-    jobType JobType
+    name           String
+    location       String
+    jobType        JobType
 }
 
 model Offer {
-    id       String    @id @default(auto()) @map("_id") @db.ObjectId
-    jobType  JobType?  @default(REMOTE)
-    location String?
-    jobTitle String?
-    status   JobStatus @default(OPEN)
-    salary   Int
-    skills   Json
+    id                 String         @id @default(auto()) @map("_id") @db.ObjectId
+    jobType            JobType?       @default(REMOTE)
+    location           String?
+    jobTitle           String?
+    status             JobStatus      @default(OPEN)
+    salary             Int
+    skills             Json
     preparedSkills     String
     embbedingSkills    Float[]
     selectedCandidates selectedCand[]
     responsibilities   String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdBy          User           @relation(fields: [userId], references: [id])
+    createdAt          DateTime       @default(now())
+    updatedAt          DateTime       @updatedAt
+    userId             String         @db.ObjectId
 }
 
 model Authenticator {
