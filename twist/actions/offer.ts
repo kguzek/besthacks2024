@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
@@ -8,6 +8,8 @@ import { openai } from "@ai-sdk/openai";
 import { embed, generateObject } from "ai";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import GoogleDistanceApi from "google-distance-api";
+import { JobType, Offer, User } from "@prisma/client";
 
 async function generateJobSkills(jobTitle: string, responsibilities: string) {
     console.log(
@@ -31,12 +33,27 @@ async function generateJobSkills(jobTitle: string, responsibilities: string) {
     return { skills: object, preparedSkills };
 }
 
+function calculateDistances(offer: Offer, applicants: User[]) {
+    const options = {
+        key: process.env.GOOGLE_MAPS_API_KEY,
+        origins: [offer.location],
+        destinations: applicants
+            .filter((a) => a.location != null)
+            .map((a) => a.location!),
+    };
+    return new Promise((resolve, reject) =>
+        GoogleDistanceApi.distance(options, (err: Error, data: any) =>
+            err ? reject(err) : resolve(data)
+        )
+    );
+}
+
 export const createOffer = actionClient
     .schema(createOfferSchema)
     .action(async ({ parsedInput }) => {
         console.log("creating offer with", parsedInput);
         try {
-            const authData = await auth()
+            const authData = await auth();
             if (!authData) {
                 return {
                     failure: "Musisz być zalogowany, aby utworzyć ofertę",
@@ -48,14 +65,17 @@ export const createOffer = actionClient
                 parsedInput.responsibilities
             );
 
-            const { embedding } = await embed({
-                model: openai.embedding("text-embedding-3-small"),
-                value: preparedSkills,
+            await prisma.offer.create({
+                data: {
+                    ...parsedInput,
+                    salary: +parsedInput.salary,
+                    skills,
+                    preparedSkills,
+                },
             });
-            await prisma.offer.create({ data: {...parsedInput, salary: +parsedInput.salary, skills, preparedSkills, embbedingSkills: embedding} });
 
-            revalidatePath("/dashboard")
-            
+            revalidatePath("/dashboard");
+
             return {
                 success: "Stworzono ofertę",
             };
