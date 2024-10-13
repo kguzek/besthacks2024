@@ -19,9 +19,9 @@ export const loginUser = actionClient
             await signIn("credentials", {
                 email,
                 password,
-                redirectTo: DEFAULT_LOGIN_REDIRECT
+                redirectTo:
+                    callbackUrl || DEFAULT_LOGIN_REDIRECT,
             });
-            console.log(callbackUrl)
         } catch (error) {
             if (error instanceof AuthError) {
                 switch (error.type) {
