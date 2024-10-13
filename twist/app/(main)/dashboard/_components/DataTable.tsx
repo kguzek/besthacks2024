@@ -17,16 +17,34 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useRouter } from 'next/navigation';
+import { Offer } from '@prisma/client';
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[];
-    data: TData[];
-}
+export const columns: ColumnDef<Offer>[] = [
+    {
+        accessorKey: "jobTitle",
+        header: "Stanowisko",
+    },
+    {
+        accessorKey: "jobType",
+        header: "Tryb pracy",
+    },
+    {
+        accessorKey: "location",
+        header: "Lokalizacja",
+    },
+    {
+        accessorKey: "salary",
+        header: "Zarobki",
+    },
+    {
+        accessorKey: "responsibilities",
+        header: "Obowiązki",
+    }
+]
 
-export function DataTable<TData, TValue>({
-    columns,
+export function DataTable({
     data,
-}: DataTableProps<TData, TValue>) {
+}: { data: Offer[] }) {
     const table = useReactTable({
         data,
         columns,

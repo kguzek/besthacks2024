@@ -1,32 +1,7 @@
 import React from 'react'
-import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from './_components/DataTable';
 import CreateOfferDialog from './_components/CreateOfferDialog';
 import { prisma } from '@/lib/db';
-import { Offer } from '@prisma/client';
-
-export const columns: ColumnDef<Offer>[] = [
-    {
-        accessorKey: "jobTitle",
-        header: "Stanowisko",
-    },
-    {
-        accessorKey: "jobType",
-        header: "Tryb pracy",
-    },
-    {
-        accessorKey: "location",
-        header: "Lokalizacja",
-    },
-    {
-        accessorKey: "salary",
-        header: "Zarobki",
-    },
-    {
-        accessorKey: "responsibilities",
-        header: "Obowiązki",
-    }
-]
 
 export default async function DashboardPage() {
     const data = await prisma.offer.findMany({
@@ -41,7 +16,7 @@ export default async function DashboardPage() {
             <div className='w-full flex justify-end mb-6'>
                 <CreateOfferDialog />
             </div>
-            <DataTable columns={columns} data={data} />
+            <DataTable data={data} />
         </div>
     </div>
   )
