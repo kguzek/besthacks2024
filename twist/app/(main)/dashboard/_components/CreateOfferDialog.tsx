@@ -20,6 +20,7 @@ import { createOffer } from '@/actions/offer';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Icons } from '@/components/icons';
+import { searchTest } from '@/actions/search';
 
 export default function CreateOfferDialog() {
     const [isPending, startTransition] = useTransition();
@@ -50,6 +51,7 @@ export default function CreateOfferDialog() {
 
     return (
         <Dialog open={opened} onOpenChange={setOpened}>
+            <Button onClick={() => searchTest()}>test</Button>
             <DialogTrigger>
                 <Button variant="outline" className='p-2'><Icons.Plus /></Button>
             </DialogTrigger>

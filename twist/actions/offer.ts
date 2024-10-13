@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 import { actionClient } from "@/lib/safe-action";
 import { createOfferSchema } from "@/schemas";
 import { openai } from "@ai-sdk/openai";
-import { generateObject } from "ai";
+import { embed, generateObject } from "ai";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -47,7 +47,12 @@ export const createOffer = actionClient
                 parsedInput.jobTitle,
                 parsedInput.responsibilities
             );
-            await prisma.offer.create({ data: {...parsedInput, salary: +parsedInput.salary, skills, preparedSkills} });
+
+            const { embedding } = await embed({
+                model: openai.embedding("text-embedding-3-small"),
+                value: preparedSkills,
+            });
+            await prisma.offer.create({ data: {...parsedInput, salary: +parsedInput.salary, skills, preparedSkills, embbedingSkills: embedding} });
 
             revalidatePath("/dashboard")
             
