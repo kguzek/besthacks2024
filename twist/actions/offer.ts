@@ -147,10 +147,14 @@ export const createOffer = actionClient
 
             revalidatePath("/dashboard");
 
-            await matchCandidates(embedding, parsedInput.location);
+            const topTenCandidates = await matchCandidates(
+                embedding,
+                parsedInput.location
+            );
 
             return {
                 success: "Stworzono ofertę",
+                selectedCandidates: topTenCandidates,
             };
         } catch (error) {
             console.error("error creating offer", error);
