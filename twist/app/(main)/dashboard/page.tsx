@@ -7,14 +7,16 @@ import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from './_components/DataTable';
 import Link from 'next/link';
 
-export type Payment = {
-    id: string
-    amount: number
-    status: "pending" | "processing" | "success" | "failed"
-    email: string
+export type Offer = {
+    jobTitle: string
+    jobType: string
+    location: string
+    salary: string
+    responsibilities: string
+    // status: "pending" | "processing" | "success" | "failed"
 }
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Offer>[] = [
     {
         accessorKey: "jobTitle",
         header: "Stanowisko",
@@ -34,26 +36,18 @@ export const columns: ColumnDef<Payment>[] = [
     {
         accessorKey: "responsibilities",
         header: "Obowiązki",
-    },
-    {
-        accessorKey: "status",
-        header: "Status",
     }
 ]
 
-async function getData(): Promise<Payment[]> {
+async function getData(): Promise<Offer[]> {
     return [
-      {
-        id: "728ed52f",
-        amount: 100,
-        status: "pending",
-        email: "m@example.com",
-      },{
-        id: "728ed52f",
-        amount: 100,
-        status: "pending",
-        email: "m@example.com",
-      }
+        {
+            jobTitle: "Junior gownostack",
+            jobType: "Pełny etat",
+            location: "Wrocław",
+            salary: "1500zł",
+            responsibilities: "sfsdf"
+        },
     ]
 }
 

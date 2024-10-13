@@ -20,13 +20,13 @@ export const signUpSchema = z.object({
     .min(8, "Hasło musi mieć co najmniej 8 znaków"),
   dob: z.date({ required_error: "Data urodzenia jest wymagana" }),
   name: z
-    .string({ required_error: "Name is required" })
-    .min(1, "Name is required")
+    .string({ required_error: "Imię i nazwisko jest wymagane" })
+    .min(1, "Imię i nazwisko jest wymagane")
     .max(128, "Name must be less than 128 characters"),
   type: z.enum([UserRole.APPLICANT, UserRole.COMPANY], {
-    required_error: "Type is required",
+    required_error: "Typ konta jest wymagany",
   }),
-  phoneNumber: z.string({ required_error: "Phone number is required" }),
+  phoneNumber: z.string({ required_error: "Number telefonu" }),
 });
 
 const GITHUB_REGEX =

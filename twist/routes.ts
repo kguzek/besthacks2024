@@ -1,12 +1,10 @@
+import { UserRole } from "@prisma/client";
+
 /**
  * An array of routes that are accessible to the public. These routes do not require authentication.
  * @type {string[]}
  */
-export const publicRoutes: string[] = [
-    "/",
-    "/about-us",
-    "/contact",
-]
+export const publicRoutes: string[] = ["/", "/about-us", "/contact"];
 
 /**
  * An array of routes that are used for authentication. These routes will redirect logged in users to the settings.
@@ -18,18 +16,18 @@ export const authRoutes: string[] = [
     "/auth/error",
     "/auth/forgot-password",
     "/auth/new-password",
-    "/auth/two-factor"
-]
+    "/auth/two-factor",
+];
 
 /**
  * The prefix for the API auth routes.
  * @type {string}
  */
-export const apiAuthPrefix: string = "/api/auth"
-export const apiPaymentPrefix: string = "/api/payment"
+export const apiAuthPrefix: string = "/api/auth";
+export const apiPaymentPrefix: string = "/api/payment";
 
-/**
- * This is default login redirect.
- * @type {string}
- */
-export const DEFAULT_LOGIN_REDIRECT: string = "/account"
+export const DEFAULT_LOGIN_REDIRECT = {
+    [UserRole.APPLICANT]: "/account",
+    [UserRole.COMPANY]: "/dashboard",
+    [UserRole.ADMIN]: "/dashboard",
+} as const;

@@ -18,7 +18,7 @@ export const registerUser = actionClient
         const hashedPassword = await bcrypt.hash(parsedInput.password, 10);
         const existingUser = await getUserByEmail(parsedInput.email);
         if (existingUser)
-            return { failure: 'Istnieje już użytkownik o tym adresie email.' };
+            return { failure: "Istnieje już użytkownik o tym adresie email." };
 
         try {
             await prisma.user.create({
@@ -90,10 +90,13 @@ export const updateProfile = actionClient
         if (!user)
             return {
                 failure:
-                    'Ta funkcja jest dostępna tylko dla zalogowanych użytkowników',
+                    "Ta funkcja jest dostępna tylko dla zalogowanych użytkowników",
             };
         try {
-            const preparedData = {...parsedInput, preferredSalary: Number(parsedInput.preferredSalary)}
+            const preparedData = {
+                ...parsedInput,
+                preferredSalary: Number(parsedInput.preferredSalary),
+            };
             await prisma.user.update({
                 where: { id: user?.id },
                 data: preparedData,
@@ -133,5 +136,5 @@ export const updateProfile = actionClient
             const error = e as Error;
             return { failure: error.message };
         }
-        return { success: 'Pomyślnie zaktualizowano dane Twojego profilu.' };
+        return { success: "Pomyślnie zaktualizowano dane Twojego profilu." };
     });
