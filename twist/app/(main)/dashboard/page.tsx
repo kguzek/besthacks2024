@@ -1,11 +1,7 @@
-'use client';
-
 import React from 'react'
-import { Button } from '@/components/ui/button';
-import { Icons } from '@/components/icons';
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from './_components/DataTable';
-import Link from 'next/link';
+import CreateOfferDialog from './_components/CreateOfferDialog';
 
 export type Offer = {
     jobTitle: string
@@ -58,9 +54,7 @@ export default async function DashboardPage() {
     <div className='flex-grow h-4/6 flex items-start flex-col'>
         <div className='w-full p-12 container'>
             <div className='w-full flex justify-end mb-6'>
-                <Link href='/dashboard/createOffer'>
-                    <Button variant="outline" className='p-2'><Icons.Plus /></Button>
-                </Link>
+                <CreateOfferDialog />
             </div>
             <DataTable columns={columns} data={data} />
         </div>

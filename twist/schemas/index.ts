@@ -59,7 +59,7 @@ export const createOfferSchema = z.object({
         required_error: "Tryb pracy jest wymagany",
     }),
     location: z.string({ required_error: "Miejscowość pracy jest wymagana" }),
-    salary: z.number({
+    salary: z.string({
         required_error: "Szacowane wynagrodzenie jest wymagane",
     }),
     responsibilities: z.string(),

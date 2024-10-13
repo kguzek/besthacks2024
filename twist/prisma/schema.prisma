@@ -67,8 +67,9 @@ model Offer {
     jobTitle String?
     status   JobStatus @default(OPEN)
     salary   Int
-    skills   String[]
-
+    skills   Json
+    preparedSkills     String
+    responsibilities   String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
