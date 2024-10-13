@@ -1,47 +1,57 @@
-import authConfig from "@/auth.config"
-import NextAuth from "next-auth"
+import authConfig from "@/auth.config";
+import NextAuth from "next-auth";
 import {
-    DEFAULT_LOGIN_REDIRECT,
+    LOGIN_REDIRECT_ROUTES,
     apiAuthPrefix,
     apiPaymentPrefix,
     authRoutes,
     publicRoutes,
-} from "@/routes"
-import { NextResponse } from "next/server"
+} from "@/routes";
+import { NextResponse } from "next/server";
 
-const { auth } = NextAuth(authConfig)
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
     const { nextUrl } = req;
     const isLoggedIn = !!req.auth;
 
-    const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
-    const isApiPaymentRoute = nextUrl.pathname.startsWith(apiPaymentPrefix)
-    const isApiProductRoute = nextUrl.pathname.startsWith('/api/products')
-    const isApiImageRoute = nextUrl.pathname.startsWith('/api/img')
-    const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
-    const isAuthRoute = authRoutes.includes(nextUrl.pathname)
+    const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+    const isApiPaymentRoute = nextUrl.pathname.startsWith(apiPaymentPrefix);
+    const isApiProductRoute = nextUrl.pathname.startsWith("/api/products");
+    const isApiImageRoute = nextUrl.pathname.startsWith("/api/img");
+    const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+    const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-    if (isApiAuthRoute || isApiPaymentRoute || isApiProductRoute || isApiImageRoute) return NextResponse.next()
+    if (
+        isApiAuthRoute ||
+        isApiPaymentRoute ||
+        isApiProductRoute ||
+        isApiImageRoute
+    )
+        return NextResponse.next();
 
     if (isAuthRoute) {
         if (isLoggedIn) {
-            return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+            return NextResponse.redirect(
+                new URL(LOGIN_REDIRECT_ROUTES, nextUrl)
+            );
         }
-        return NextResponse.next()
+        return NextResponse.next();
     }
 
     if (!isLoggedIn && !isPublicRoute) {
-        let callbackUrl = nextUrl.pathname
-        if (nextUrl.search) callbackUrl += nextUrl.search
+        let callbackUrl = nextUrl.pathname;
+        if (nextUrl.search) callbackUrl += nextUrl.search;
 
-        const encodedCallbackUrl = encodeURIComponent(callbackUrl)
-        return NextResponse.redirect(new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl))
+        const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+        return NextResponse.redirect(
+            new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
+        );
     }
 
-    return NextResponse.next()
-})
+    return NextResponse.next();
+});
 
 export const config = {
-    matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
-}
+    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};
