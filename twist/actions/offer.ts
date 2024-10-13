@@ -88,9 +88,13 @@ export const matchCandidates = async (
         distanceRating?: number;
     }[];
 
-    let distances;
+    let sortedUsers = users.map((user, idx) => ({
+        ...user,
+        idx,
+        distanceRating: 1,
+    }));
     try {
-        distances = await calculateDistances(baseLocation, users);
+        const distances = await calculateDistances(baseLocation, users);
         for (let i = 0; i < users.length; i++) {
             const user = users[i];
             const distanceData = distances[i];
@@ -100,9 +104,13 @@ export const matchCandidates = async (
             );
         }
         console.log(distances);
+        sortedUsers = sortedUsers.sort(
+            (a, b) => a.idx / a.distanceRating - b.idx / b.distanceRating
+        );
     } catch (e) {
         console.error("Error calculating distances:", e);
     }
+    return sortedUsers.splice(0, 10);
 };
 
 export const createOffer = actionClient
