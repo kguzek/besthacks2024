@@ -9,7 +9,7 @@ import { embed, generateObject } from "ai";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import GoogleDistanceApi from "google-distance-api";
-import { Offer, User } from "@prisma/client";
+import { JobType, Offer, User } from "@prisma/client";
 import { findSimilarDocuments } from "./search";
 
 async function generateJobSkills(jobTitle: string, responsibilities: string) {
@@ -34,7 +34,19 @@ async function generateJobSkills(jobTitle: string, responsibilities: string) {
     return { skills: object, preparedSkills };
 }
 
-function calculateDistances(location: string, applicants: { location: string }[]) {
+interface DistanceResult {
+    origin: string;
+    destination: string;
+    distance: string; // e.g. '170 km'
+    distanceValue: number; // e.g. 170009 (metres)
+    duration: string;
+    durationValue: number;
+}
+
+function calculateDistances(
+    location: string,
+    applicants: { location: string }[]
+) {
     const options = {
         key: process.env.GOOGLE_MAPS_API_KEY,
         origins: [location],
@@ -42,22 +54,56 @@ function calculateDistances(location: string, applicants: { location: string }[]
             .filter((a) => a.location != null)
             .map((a) => a.location!),
     };
-    return new Promise((resolve, reject) =>
-        GoogleDistanceApi.distance(options, (err: Error, data: any) =>
-            err ? reject(err) : resolve(data)
+    return new Promise<DistanceResult[]>((resolve, reject) =>
+        GoogleDistanceApi.distance(
+            options,
+            (err: Error, data: DistanceResult[]) =>
+                err ? reject(err) : resolve(data)
         )
     );
 }
 
-export const searchForPeople = async (embedding: number[], baseLocation: string) => {
-    console.log("searching for people");
-    
-    const users = await findSimilarDocuments(embedding) as { name: string, location: string }[];
-    console.log(users);
-
-    const distances = await calculateDistances(baseLocation, users);
-    console.log(distances);
+function getDistanceRating(jobType: JobType, distance: number) {
+    switch (jobType) {
+        case JobType.REMOTE:
+            return 1;
+        case JobType.HYBRID:
+            return distance > 30_000 ? 0.1 : 1;
+        case JobType.ONSITE:
+        default:
+            return distance > 15_000 ? 0.1 : 1;
+    }
 }
+
+export const matchCandidates = async (
+    embedding: number[],
+    baseLocation: string
+) => {
+    console.log("searching for people");
+
+    const users = (await findSimilarDocuments(embedding)) as {
+        name: string;
+        location: string;
+        jobType: JobType;
+        distanceRating?: number;
+    }[];
+
+    let distances;
+    try {
+        distances = await calculateDistances(baseLocation, users);
+        for (let i = 0; i < users.length; i++) {
+            const user = users[i];
+            const distanceData = distances[i];
+            user.distanceRating = getDistanceRating(
+                user.jobType,
+                distanceData.distanceValue
+            );
+        }
+        console.log(distances);
+    } catch (e) {
+        console.error("Error calculating distances:", e);
+    }
+};
 
 export const createOffer = actionClient
     .schema(createOfferSchema)
@@ -92,8 +138,8 @@ export const createOffer = actionClient
             });
 
             revalidatePath("/dashboard");
-            
-            await searchForPeople(embedding, parsedInput.location);
+
+            await matchCandidates(embedding, parsedInput.location);
 
             return {
                 success: "Stworzono ofertę",

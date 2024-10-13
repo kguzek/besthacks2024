@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use server';
+"use server";
 
-import { auth } from '@/auth';
-import { prisma } from '@/lib/db';
-import { getUserByEmail } from '@/lib/prisma';
-import { actionClient } from '@/lib/safe-action';
-import { signUpSchema, updateProfileSchema } from '@/schemas';
-import { openai } from '@ai-sdk/openai';
-import { embed, generateObject, generateText } from 'ai';
-import bcrypt from 'bcryptjs';
-import { z } from 'zod';
+import { auth } from "@/auth";
+import { prisma } from "@/lib/db";
+import { getUserByEmail } from "@/lib/prisma";
+import { actionClient } from "@/lib/safe-action";
+import { signUpSchema, updateProfileSchema } from "@/schemas";
+import { openai } from "@ai-sdk/openai";
+import { embed, generateObject, generateText } from "ai";
+import bcrypt from "bcryptjs";
+import { z } from "zod";
 // import gs from "github-scraper"
 
 export const registerUser = actionClient
@@ -36,9 +36,8 @@ export const registerUser = actionClient
             const error = e as Error;
             return { failure: error.message };
         }
-        return { success: 'Pomyślnie zarejestrowano nowego użytkownika! :)' };
+        return { success: "Pomyślnie zarejestrowano nowego użytkownika! :)" };
     });
-
 
 const getGithubProfile = async (baseUrl: string, accessToken: string) => {
     // fetch data from https://api.github.com/users/qamarq
@@ -50,21 +49,28 @@ const getGithubProfile = async (baseUrl: string, accessToken: string) => {
     const requestOptions = {
         method: "GET",
         headers: myHeaders,
-        redirect: "follow"
+        redirect: "follow",
     } as const;
-    
-    const response = await fetch(`https://api.github.com/users/${baseUrl.split('/').pop()}`, requestOptions);
+
+    const response = await fetch(
+        `https://api.github.com/users/${baseUrl.split("/").pop()}`,
+        requestOptions
+    );
     const data = await response.json();
-    if (data.status === 404) return { failure: 'Nie znaleziono użytkownika na Githubie' }
-    
+    if (data.status === 404)
+        return { failure: "Nie znaleziono użytkownika na Githubie" };
+
     const mainProfile = {
         login: data.login,
         name: data.name,
         public_repos: data.public_repos,
         followers: data.followers,
-    }
+    };
 
-    const repos = await fetch(`https://api.github.com/users/${data.login}/repos`, requestOptions);
+    const repos = await fetch(
+        `https://api.github.com/users/${data.login}/repos`,
+        requestOptions
+    );
     const reposData = await repos.json();
     // const preparedRepos = reposData.map(async (repo: any) => {
     //     const languages = await fetch(repo.languages_url);
@@ -77,20 +83,20 @@ const getGithubProfile = async (baseUrl: string, accessToken: string) => {
     // })
     // prepared repos
     // console.log("reposData", reposData)
-    const preparedRepos = await Promise.all(reposData.map(async (repo: any) => {
-        const languages = await fetch(repo.languages_url, requestOptions);
-        const languagesData = await languages.json();
-        return {
-            name: repo.name,
-            description: repo.description,
-            stargazers_count: repo.stargazers_count,
-            languages: Object.keys(languagesData),
-        }
-    }))
-    return({ mainProfile, preparedRepos })
-}
-
-
+    const preparedRepos = await Promise.all(
+        reposData.map(async (repo: any) => {
+            const languages = await fetch(repo.languages_url, requestOptions);
+            const languagesData = await languages.json();
+            return {
+                name: repo.name,
+                description: repo.description,
+                stargazers_count: repo.stargazers_count,
+                languages: Object.keys(languagesData),
+            };
+        })
+    );
+    return { mainProfile, preparedRepos };
+};
 
 export const updateProfile = actionClient
     .schema(updateProfileSchema)
@@ -112,7 +118,10 @@ export const updateProfile = actionClient
                 include: { accounts: true },
             });
 
-            const gitData = await getGithubProfile(parsedInput.githubLink, userData.accounts[0].access_token!)
+            const gitData = await getGithubProfile(
+                parsedInput.githubLink,
+                userData.accounts[0].access_token!
+            );
 
             const { object } = await generateObject({
                 model: openai("gpt-4o-mini"),
@@ -121,10 +130,16 @@ export const updateProfile = actionClient
                     name: z.string(),
                     skill: z.number(),
                 }),
-                prompt: `analyse this github profile ${JSON.stringify(gitData.mainProfile)} and repositories: ${JSON.stringify(gitData.preparedRepos)} and provide a condensed json object with the keys being buzzword skills you believe this user posseses and the values being the estimated proficiency in each skill in scale from 1 to 10.`,
+                prompt: `analyse this github profile ${JSON.stringify(
+                    gitData.mainProfile
+                )} and repositories: ${JSON.stringify(
+                    gitData.preparedRepos
+                )} and provide a condensed json object with the keys being buzzword skills you believe this user posseses and the values being the estimated proficiency in each skill in scale from 1 to 10.`,
             });
 
-            const preparedSkills = object.map((skill: any) => skill.name).join(", ");
+            const preparedSkills = object
+                .map((skill: any) => skill.name)
+                .join(", ");
             const { embedding } = await embed({
                 model: openai.embedding("text-embedding-3-small"),
                 value: preparedSkills,
@@ -134,7 +149,7 @@ export const updateProfile = actionClient
                 where: { id: user?.id },
                 data: {
                     skills: object,
-                    skillsEmbedding: embedding
+                    skillsEmbedding: embedding,
                 },
             });
         } catch (e) {

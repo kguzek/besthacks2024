@@ -8,7 +8,7 @@ export const signInSchema = z.object({
     password: z
         .string({ required_error: "Hasło jest wymagane" })
         .min(8, "Hasło musi mieć co najmniej 8 znaków"),
-    callbackUrl: z.string({ required_error: "Callback URL is required" }),
+    callbackUrl: z.string().nullable(),
 });
 
 export const signUpSchema = z.object({

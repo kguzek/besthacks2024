@@ -25,10 +25,8 @@ import {
 } from "@/components/ui/form";
 import { Icons } from "@/components/icons";
 import { useRouter, useSearchParams } from "next/navigation";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { UserRole } from "@prisma/client";
 
 export default function LoginForm() {
     const [isPending, startTransition] = useTransition();
@@ -65,8 +63,7 @@ export default function LoginForm() {
         defaultValues: {
             email: "",
             password: "",
-            callbackUrl:
-                callbackUrl || DEFAULT_LOGIN_REDIRECT[UserRole.APPLICANT],
+            callbackUrl,
         },
     });
 
