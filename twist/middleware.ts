@@ -1,14 +1,13 @@
 import authConfig from "@/auth.config";
 import NextAuth from "next-auth";
 import {
-    LOGIN_REDIRECT_ROUTES,
     apiAuthPrefix,
     apiPaymentPrefix,
     authRoutes,
+    DEFAULT_LOGIN_REDIRECT,
     publicRoutes,
 } from "@/routes";
 import { NextResponse } from "next/server";
-import { UserRole } from "@prisma/client";
 
 const { auth } = NextAuth(authConfig);
 
@@ -33,15 +32,7 @@ export default auth((req) => {
 
     if (isAuthRoute) {
         if (isLoggedIn) {
-            return NextResponse.redirect(
-                new URL(
-                    LOGIN_REDIRECT_ROUTES[
-                        (req.auth?.user?.role ??
-                            UserRole.APPLICANT) as keyof typeof UserRole
-                    ],
-                    nextUrl
-                )
-            );
+            return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
         }
         return NextResponse.next();
     }

@@ -1,4 +1,4 @@
-import { UserRole } from "@prisma/client";
+
 
 /**
  * An array of routes that are accessible to the public. These routes do not require authentication.
@@ -26,8 +26,4 @@ export const authRoutes: string[] = [
 export const apiAuthPrefix: string = "/api/auth";
 export const apiPaymentPrefix: string = "/api/payment";
 
-export const LOGIN_REDIRECT_ROUTES = {
-    [UserRole.APPLICANT]: "/account",
-    [UserRole.COMPANY]: "/dashboard",
-    [UserRole.ADMIN]: "/dashboard",
-} as const;
+export const DEFAULT_LOGIN_REDIRECT: string = "/account"

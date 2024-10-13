@@ -4,7 +4,7 @@ import { getUserByEmail } from "@/lib/prisma";
 import { actionClient } from "@/lib/safe-action";
 import { signInSchema } from "@/schemas";
 import { signIn } from "@/auth";
-import { LOGIN_REDIRECT_ROUTES } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
 
 export const loginUser = actionClient
@@ -19,9 +19,9 @@ export const loginUser = actionClient
             await signIn("credentials", {
                 email,
                 password,
-                redirectTo:
-                    callbackUrl || LOGIN_REDIRECT_ROUTES[existingUser.role],
+                redirectTo: DEFAULT_LOGIN_REDIRECT
             });
+            console.log(callbackUrl)
         } catch (error) {
             if (error instanceof AuthError) {
                 switch (error.type) {
