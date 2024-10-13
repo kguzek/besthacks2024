@@ -60,6 +60,14 @@ model User {
     updatedAt DateTime @updatedAt
 }
 
+type selectedCand {
+    idx Int
+    distanceRating Int
+    name String
+    location String
+    jobType JobType
+}
+
 model Offer {
     id       String    @id @default(auto()) @map("_id") @db.ObjectId
     jobType  JobType?  @default(REMOTE)
@@ -70,6 +78,7 @@ model Offer {
     skills   Json
     preparedSkills     String
     embbedingSkills    Float[]
+    selectedCandidates selectedCand[]
     responsibilities   String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

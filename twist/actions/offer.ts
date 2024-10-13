@@ -9,7 +9,7 @@ import { embed, generateObject } from "ai";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import GoogleDistanceApi from "google-distance-api";
-import { JobType, Offer, User } from "@prisma/client";
+import { JobType } from "@prisma/client";
 import { findSimilarDocuments } from "./search";
 
 async function generateJobSkills(jobTitle: string, responsibilities: string) {
@@ -135,7 +135,7 @@ export const createOffer = actionClient
                 value: preparedSkills,
             });
 
-            await prisma.offer.create({
+            const createdOffer = await prisma.offer.create({
                 data: {
                     ...parsedInput,
                     salary: +parsedInput.salary,
@@ -147,14 +147,21 @@ export const createOffer = actionClient
 
             revalidatePath("/dashboard");
 
-            const topTenCandidates = await matchCandidates(
+            const selectedCandidates = await matchCandidates(
                 embedding,
                 parsedInput.location
             );
 
+            await prisma.offer.update({
+                where: { id: createdOffer.id },
+                data: {
+                    selectedCandidates
+                },
+            })
+
             return {
                 success: "Stworzono ofertę",
-                selectedCandidates: topTenCandidates,
+                selectedCandidates,
             };
         } catch (error) {
             console.error("error creating offer", error);

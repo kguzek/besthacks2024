@@ -2,15 +2,8 @@ import React from 'react'
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from './_components/DataTable';
 import CreateOfferDialog from './_components/CreateOfferDialog';
-
-export type Offer = {
-    jobTitle: string
-    jobType: string
-    location: string
-    salary: string
-    responsibilities: string
-    // status: "pending" | "processing" | "success" | "failed"
-}
+import { prisma } from '@/lib/db';
+import { Offer } from '@prisma/client';
 
 export const columns: ColumnDef<Offer>[] = [
     {
@@ -35,23 +28,15 @@ export const columns: ColumnDef<Offer>[] = [
     }
 ]
 
-async function getData(): Promise<Offer[]> {
-    return [
-        {
-            jobTitle: "Junior gownostack",
-            jobType: "Pełny etat",
-            location: "Wrocław",
-            salary: "1500zł",
-            responsibilities: "sfsdf"
-        },
-    ]
-}
-
 export default async function DashboardPage() {
-    const data = await getData();
+    const data = await prisma.offer.findMany({
+        orderBy: {
+            createdAt: 'desc'
+        },
+    });
 
     return (
-    <div className='flex-grow h-4/6 flex items-start flex-col'>
+    <div className='flex-grow h-5/6 flex items-start flex-col'>
         <div className='w-full p-12 container'>
             <div className='w-full flex justify-end mb-6'>
                 <CreateOfferDialog />
