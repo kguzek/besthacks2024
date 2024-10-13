@@ -28,6 +28,7 @@ import { useState, useTransition } from 'react';
 import { JobHoursTime, JobType, User } from '@prisma/client';
 import { updateProfile } from '@/actions/profile';
 import { toast } from 'sonner';
+import { signIn } from 'next-auth/react';
 
 export default function AccountDetails({ user }: { user: User }) {
     const [isPending, startTransition] = useTransition();
@@ -85,16 +86,14 @@ export default function AccountDetails({ user }: { user: User }) {
                                     control={form.control}
                                     name="githubLink"
                                     render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Github link</FormLabel>
+                                        <FormItem className='flex flex-col'>
+                                            <FormLabel className='mb-2'>Github link</FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    {...field}
-                                                    disabled={isPending}
-                                                    placeholder="https://github.com/jankowalski"
-                                                    type="text"
-                                                    autoComplete=""
-                                                />
+                                                {field.value ? (
+                                                    <Button disabled><Icons.Github className='w-4 h-4 mr-2' />Potwierdzono profil GitHub: {user.githubLink?.split("/").pop()}</Button>
+                                                ) : (
+                                                    <Button type="button" onClick={() => signIn("github")}><Icons.Github className='w-4 h-4 mr-2' />Zaloguj się przez GitHub</Button>
+                                                )}
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

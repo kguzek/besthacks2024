@@ -4,6 +4,7 @@ import type { NextAuthConfig } from "next-auth"
 import { getUserByEmail } from "./lib/prisma"
 import bcrypt from "bcryptjs"
 import Passkey from "next-auth/providers/passkey"
+import Github from "next-auth/providers/github"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/db"
 
@@ -32,6 +33,7 @@ export default {
                 return null
             }
         }),
-        Passkey
+        Passkey,
+        Github
     ],
 } satisfies NextAuthConfig

@@ -54,7 +54,7 @@ model User {
   preferredDistance Int?
   enabled           Boolean       @default(false)
   skills            Json?
-  skillsEmbedding   String[]
+  skillsEmbedding   Int[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

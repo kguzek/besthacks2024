@@ -8,6 +8,7 @@ export type ExtendedUser = DefaultSession["user"] & {
         provider: string;
     }[],
     passwordExist: boolean
+    githubLink: string | null
 }
 
 declare module "next-auth" {
