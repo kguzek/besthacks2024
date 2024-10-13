@@ -1,111 +1,111 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
 }
 
 enum UserRole {
-  APPLICANT
-  COMPANY
-  ADMIN
+    APPLICANT
+    COMPANY
+    ADMIN
 }
 
 enum JobHoursTime {
-  FULL
-  PART
-  MINI
+    FULL
+    PART
+    MINI
 }
 
 enum JobType {
-  REMOTE
-  ONSITE
-  HYBRID
+    REMOTE
+    ONSITE
+    HYBRID
 }
 
 enum JobStatus {
-  OPEN
-  PENDING
-  CLOSED
+    OPEN
+    PENDING
+    CLOSED
 }
 
 model User {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  dob           DateTime
-  name          String?
-  email         String?         @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  password      String?
-  role          UserRole        @default(APPLICANT)
-  // Optional for WebAuthn support
-  Authenticator Authenticator[]
-  phoneNumber   String?
+    id            String          @id @default(auto()) @map("_id") @db.ObjectId
+    dob           DateTime
+    name          String?
+    email         String?         @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    password      String?
+    role          UserRole        @default(APPLICANT)
+    // Optional for WebAuthn support
+    Authenticator Authenticator[]
+    phoneNumber   String?
 
-  githubLink        String?
-  preferredHours    JobHoursTime? @default(FULL)
-  jobType           JobType?      @default(REMOTE)
-  location          String?
-  jobTitle          String?
-  preferredSalary   Int?
-  preferredDistance Int?
-  enabled           Boolean       @default(false)
-  skills            Json?
-  skillsEmbedding   Int[]
+    githubLink        String?
+    preferredHours    JobHoursTime? @default(FULL)
+    jobType           JobType?      @default(REMOTE)
+    location          String?
+    jobTitle          String?
+    preferredSalary   Int?
+    preferredDistance Int?
+    enabled           Boolean       @default(false)
+    skills            Json?
+    skillsEmbedding   Int[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Offer {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  jobType  JobType?  @default(REMOTE)
-  location String?
-  jobTitle String?
-  status   JobStatus
-  salary   Int
-  skills   String[]
+    id       String    @id @default(auto()) @map("_id") @db.ObjectId
+    jobType  JobType?  @default(REMOTE)
+    location String?
+    jobTitle String?
+    status   JobStatus @default(OPEN)
+    salary   Int
+    skills   String[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Authenticator {
-  credentialID         String  @id @map("_id")
-  userId               String  @db.ObjectId
-  providerAccountId    String
-  credentialPublicKey  String
-  counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
-  transports           String?
+    credentialID         String  @id @map("_id")
+    userId               String  @db.ObjectId
+    providerAccountId    String
+    credentialPublicKey  String
+    counter              Int
+    credentialDeviceType String
+    credentialBackedUp   Boolean
+    transports           String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, credentialID])
+    @@unique([userId, credentialID])
 }
 
 model Account {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String  @db.ObjectId
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.String
-  access_token      String? @db.String
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.String
-  session_state     String?
+    id                String  @id @default(auto()) @map("_id") @db.ObjectId
+    userId            String  @db.ObjectId
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.String
+    access_token      String? @db.String
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.String
+    session_state     String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+    @@unique([provider, providerAccountId])
 }

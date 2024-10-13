@@ -1,3 +1,4 @@
+import { prisma } from "@/lib/db";
 import { actionClient } from "@/lib/safe-action";
 import { createOfferSchema } from "@/schemas";
 import { openai } from "@ai-sdk/openai";
@@ -35,4 +36,5 @@ export const createOffer = actionClient
             parsedInput.jobTitle,
             parsedInput.responsibilities
         );
+        await prisma.offer.create({ data: parsedInput });
     });
