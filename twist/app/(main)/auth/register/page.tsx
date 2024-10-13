@@ -22,7 +22,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { signUpSchema } from '@/schemas';
 import { useTransition, useState, useEffect } from 'react';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription, } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { registerUser } from '@/actions/profile';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
