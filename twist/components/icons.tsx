@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ArrowLeft, ChartPieIcon, Loader2, SettingsIcon, ShieldCheckIcon, UserIcon, ArrowRight, Plus } from "lucide-react";
-import { FaAngleRight, FaCrown, FaGithub } from "react-icons/fa6";
+import { FaAngleRight, FaCircleCheck, FaCrown, FaGithub } from "react-icons/fa6";
 import { HiOutlineLogout } from "react-icons/hi";
 import { RiSettings4Fill } from "react-icons/ri";
 
@@ -31,5 +31,6 @@ export const Icons = {
     Settings2: SettingsIcon,
     ArrowRight: ArrowRight,
     Plus: Plus,
-    Github: FaGithub
+    Github: FaGithub,
+    Done: FaCircleCheck 
 }
