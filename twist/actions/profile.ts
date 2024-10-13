@@ -40,9 +40,20 @@ export const registerUser = actionClient
     });
 
 
-const getGithubProfile = async (baseUrl: string) => {
+const getGithubProfile = async (baseUrl: string, accessToken: string) => {
     // fetch data from https://api.github.com/users/qamarq
-    const response = await fetch(`https://api.github.com/users/${baseUrl.split('/').pop()}`);
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + accessToken);
+    myHeaders.append("Accept", "application/vnd.github+json");
+    myHeaders.append("X-GitHub-Api-Version", "2022-11-28");
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+    } as const;
+    
+    const response = await fetch(`https://api.github.com/users/${baseUrl.split('/').pop()}`, requestOptions);
     const data = await response.json();
     if (data.status === 404) return { failure: 'Nie znaleziono użytkownika na Githubie' }
     
@@ -53,7 +64,7 @@ const getGithubProfile = async (baseUrl: string) => {
         followers: data.followers,
     }
 
-    const repos = await fetch(`https://api.github.com/users/${data.login}/repos`);
+    const repos = await fetch(`https://api.github.com/users/${data.login}/repos`, requestOptions);
     const reposData = await repos.json();
     // const preparedRepos = reposData.map(async (repo: any) => {
     //     const languages = await fetch(repo.languages_url);
@@ -65,8 +76,9 @@ const getGithubProfile = async (baseUrl: string) => {
     //     }
     // })
     // prepared repos
+    // console.log("reposData", reposData)
     const preparedRepos = await Promise.all(reposData.map(async (repo: any) => {
-        const languages = await fetch(repo.languages_url);
+        const languages = await fetch(repo.languages_url, requestOptions);
         const languagesData = await languages.json();
         return {
             name: repo.name,
@@ -75,10 +87,7 @@ const getGithubProfile = async (baseUrl: string) => {
             languages: Object.keys(languagesData),
         }
     }))
-    console.log({ mainProfile, preparedRepos })
-    preparedRepos.forEach(async (repo: any) => {
-        console.log(repo)
-    })
+    return({ mainProfile, preparedRepos })
 }
 
 
@@ -97,40 +106,37 @@ export const updateProfile = actionClient
                 ...parsedInput,
                 preferredSalary: Number(parsedInput.preferredSalary),
             };
-            await prisma.user.update({
+            const userData = await prisma.user.update({
                 where: { id: user?.id },
                 data: preparedData,
+                include: { accounts: true },
             });
 
-            getGithubProfile(parsedInput.githubLink)
+            const gitData = await getGithubProfile(parsedInput.githubLink, userData.accounts[0].access_token!)
 
-            // const { text } = await generateText({
-            //     model: openai('gpt-4o-mini'),
-            //     prompt: `analyse all the repositories of ${parsedInput.githubLink} and provide a condensed json object with the keys being buzzword skills you believe this user posseses and the values being the estimated proficiency in each skill in scale from 1 to 10. Reply only with the json object.`,
-            //   });
-            // console.log(text);
+            const { object } = await generateObject({
+                model: openai("gpt-4o-mini"),
+                output: "array",
+                schema: z.object({
+                    name: z.string(),
+                    skill: z.number(),
+                }),
+                prompt: `analyse this github profile ${JSON.stringify(gitData.mainProfile)} and repositories: ${JSON.stringify(gitData.preparedRepos)} and provide a condensed json object with the keys being buzzword skills you believe this user posseses and the values being the estimated proficiency in each skill in scale from 1 to 10.`,
+            });
 
-            // const { object } = await generateObject({
-            //     model: openai("gpt-4o-mini"),
-            //     schema: z.object({
-            //         skills: z.record(z.string(), z.number()),
-            //     }),
-            //     prompt: `analyse all the repositories of ${parsedInput.githubLink} and provide a condensed json object with the keys being buzzword skills you believe this user posseses and the values being the estimated proficiency in each skill`,
-            // });
+            const preparedSkills = object.map((skill: any) => skill.name).join(", ");
+            const { embedding } = await embed({
+                model: openai.embedding("text-embedding-3-small"),
+                value: preparedSkills,
+            });
 
-            // const preparedSkills = Object.keys(object.skills).join(", ");
-            // const { embedding } = await embed({
-            //     model: openai.embedding("text-embedding-3-small"),
-            //     value: preparedSkills,
-            // });
-
-            // await prisma.user.update({
-            //     where: { id: user?.id },
-            //     data: {
-            //         skills: object.skills,
-            //         skillsEmbedding: embedding
-            //     },
-            // });
+            await prisma.user.update({
+                where: { id: user?.id },
+                data: {
+                    skills: object,
+                    skillsEmbedding: embedding
+                },
+            });
         } catch (e) {
             console.error(e);
             const error = e as Error;
