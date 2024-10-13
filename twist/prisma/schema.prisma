@@ -67,6 +67,10 @@ type selectedCand {
     name           String
     location       String
     jobType        JobType
+    jobTitle       String
+    email           String
+    skills            Json?
+    score           Float
 }
 
 model Offer {

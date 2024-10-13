@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import {
@@ -62,7 +63,7 @@ export function DataTable<TData, TValue>({
                                 key={row.id}
                                 data-state={row.getIsSelected() && 'selected'}
                                 className='cursor-pointer'
-                                onClick={() => route.push("/dashboard/"+row.id)}>
+                                onClick={() => route.push("/dashboard/"+(row.original as any).id)}>
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>
                                         {flexRender(

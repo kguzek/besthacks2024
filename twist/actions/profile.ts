@@ -7,7 +7,7 @@ import { getUserByEmail } from "@/lib/prisma";
 import { actionClient } from "@/lib/safe-action";
 import { signUpSchema, updateProfileSchema } from "@/schemas";
 import { openai } from "@ai-sdk/openai";
-import { embed, generateObject, generateText } from "ai";
+import { embed, generateObject } from "ai";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 // import gs from "github-scraper"

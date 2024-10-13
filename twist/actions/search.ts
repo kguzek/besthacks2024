@@ -27,8 +27,9 @@ export async function findSimilarDocuments(embedding: number[]) {
                 },
                 {
                     $project: {
-                        _id: 1,
+                        _id: 0,
                         name: 1,
+                        email: 1,
                         skills: 1,
                         jobTitle: 1,
                         jobType: 1,

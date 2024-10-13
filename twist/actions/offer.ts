@@ -9,7 +9,7 @@ import { embed, generateObject } from "ai";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import GoogleDistanceApi from "google-distance-api";
-import { JobType } from "@prisma/client";
+import { JobType, selectedCand } from "@prisma/client";
 import { findSimilarDocuments } from "./search";
 
 async function generateJobSkills(jobTitle: string, responsibilities: string) {
@@ -81,12 +81,7 @@ export const matchCandidates = async (
 ) => {
     console.log("searching for people");
 
-    const users = (await findSimilarDocuments(embedding)) as {
-        name: string;
-        location: string;
-        jobType: JobType;
-        distanceRating?: number;
-    }[];
+    const users = (await findSimilarDocuments(embedding)) as selectedCand[];
 
     let sortedUsers = users.map((user, idx) => ({
         ...user,
