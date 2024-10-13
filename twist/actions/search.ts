@@ -4,7 +4,7 @@ import { openai } from '@ai-sdk/openai';
 import { embed } from 'ai';
 import { MongoClient } from 'mongodb';
 
-async function findSimilarDocuments(embedding: number[]) {
+export async function findSimilarDocuments(embedding: number[]) {
     const client = new MongoClient(process.env.DATABASE_URL!);
 
     try {
@@ -31,6 +31,7 @@ async function findSimilarDocuments(embedding: number[]) {
                         name: 1,
                         skills: 1,
                         jobTitle: 1,
+                        location: 1,
                         score: {
                             $meta: 'vectorSearchScore',
                         },
@@ -48,7 +49,7 @@ async function findSimilarDocuments(embedding: number[]) {
 export const searchTest = async () => {
     console.log('searching for offers');
     const input =
-        'HTML, CSS, JavaScript, React, Node.js, Express.js, RESTful APIs, Database Management (SQL/NoSQL), Version Control (Git), Responsive Design, UI/UX Principles, Testing and Debugging, Deployment and Hosting, Agile Methodologies, Problem Solving, Communication Skills, Collaboration Tools (e.g., Slack, Trello), Security Best Practices, Performance Optimization, Web Accessibility (a11y)';
+        'tworzenie stron';
 
     const { embedding } = await embed({
         model: openai.embedding('text-embedding-3-small'),

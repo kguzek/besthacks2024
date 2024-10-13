@@ -9,7 +9,8 @@ import { embed, generateObject } from "ai";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import GoogleDistanceApi from "google-distance-api";
-import { JobType, Offer, User } from "@prisma/client";
+import { Offer, User } from "@prisma/client";
+import { findSimilarDocuments } from "./search";
 
 async function generateJobSkills(jobTitle: string, responsibilities: string) {
     console.log(
@@ -24,7 +25,7 @@ async function generateJobSkills(jobTitle: string, responsibilities: string) {
             name: z.string(),
             importance: z.number(),
         }),
-        prompt: `provide a json condensed list of all skills required by "${jobTitle}" working on "${responsibilities}", with the key being a skill buzzword and the value representing how essential the skill is to the role`,
+        prompt: `provide a json condensed list of all skills required by "${jobTitle}" working on "${responsibilities}", with the key being a skill buzzword and the value representing how essential the skill is to the role. Max 10 most important skills.`,
     });
 
     // results skills name in string: skill1, skill2, skill3
@@ -33,10 +34,10 @@ async function generateJobSkills(jobTitle: string, responsibilities: string) {
     return { skills: object, preparedSkills };
 }
 
-function calculateDistances(offer: Offer, applicants: User[]) {
+function calculateDistances(location: string, applicants: { location: string }[]) {
     const options = {
         key: process.env.GOOGLE_MAPS_API_KEY,
-        origins: [offer.location],
+        origins: [location],
         destinations: applicants
             .filter((a) => a.location != null)
             .map((a) => a.location!),
@@ -46,6 +47,16 @@ function calculateDistances(offer: Offer, applicants: User[]) {
             err ? reject(err) : resolve(data)
         )
     );
+}
+
+export const searchForPeople = async (embedding: number[], baseLocation: string) => {
+    console.log("searching for people");
+    
+    const users = await findSimilarDocuments(embedding) as { name: string, location: string }[];
+    console.log(users);
+
+    const distances = await calculateDistances(baseLocation, users);
+    console.log(distances);
 }
 
 export const createOffer = actionClient
@@ -65,16 +76,24 @@ export const createOffer = actionClient
                 parsedInput.responsibilities
             );
 
+            const { embedding } = await embed({
+                model: openai.embedding("text-embedding-3-small"),
+                value: preparedSkills,
+            });
+
             await prisma.offer.create({
                 data: {
                     ...parsedInput,
                     salary: +parsedInput.salary,
                     skills,
                     preparedSkills,
+                    embbedingSkills: embedding,
                 },
             });
 
             revalidatePath("/dashboard");
+            
+            await searchForPeople(embedding, parsedInput.location);
 
             return {
                 success: "Stworzono ofertę",
