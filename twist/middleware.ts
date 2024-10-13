@@ -34,7 +34,13 @@ export default auth((req) => {
     if (isAuthRoute) {
         if (isLoggedIn) {
             return NextResponse.redirect(
-                new URL(LOGIN_REDIRECT_ROUTES[(req.auth?.user.role ?? UserRole.APPLICANT) as keyof typeof UserRole], nextUrl)
+                new URL(
+                    LOGIN_REDIRECT_ROUTES[
+                        (req.auth?.user?.role ??
+                            UserRole.APPLICANT) as keyof typeof UserRole
+                    ],
+                    nextUrl
+                )
             );
         }
         return NextResponse.next();
