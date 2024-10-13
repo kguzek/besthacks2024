@@ -89,3 +89,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@media (max-width: 600px) {
+    :root{
+        font-size: 10px;
+    }
+}
