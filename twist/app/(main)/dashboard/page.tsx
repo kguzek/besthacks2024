@@ -58,7 +58,7 @@ export default async function DashboardPage() {
     <div className='flex-grow h-4/6 flex items-start flex-col'>
         <div className='w-full p-12 container'>
             <div className='w-full flex justify-end mb-6'>
-                <Link href='/createOffer'>
+                <Link href='/dashboard/createOffer'>
                     <Button variant="outline" className='p-2'><Icons.Plus /></Button>
                 </Link>
             </div>
