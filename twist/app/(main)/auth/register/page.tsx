@@ -56,7 +56,7 @@ export default function RegisterForm() {
         startTransition(async () => {
             const res = await registerUser(values);
             if (res?.data?.success) {
-                toast.success("Account created successfully. Redirecting to login page...");
+                toast.success(res.data.success);
                 setTimeout(() => {
                     router.push('/auth/login');
                 }, 1500);
